@@ -23,8 +23,8 @@
   "homepage": "https://github.com/kangdy25/BibleSlide#readme",
   "dependencies": {
     "electron": "^29.0.0",
+    "express": "^5.1.0",
     "pptxgenjs": "^3.12.0",
-    "puppeteer": "^24.10.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
