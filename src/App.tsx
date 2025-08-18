@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 declare global {
   interface Window {
     electronAPI: {
       fetchVerse: (input: string) => Promise<string>;
+      ping: () => Promise<string>;
       generatePpt: (input: string) => Promise<string>;
     };
   }
@@ -11,6 +12,12 @@ declare global {
 function App() {
   const [input, setInput] = useState("");
   const [message, setMessage] = useState("");
+  const [pingPong, setPingPong] = useState("");
+
+  const handlePingPong = async () => {
+    const res = await window.electronAPI.ping();
+    setPingPong(res);
+  }
 
     const handleClick = async () => {
       setMessage("처리 중...");
@@ -45,6 +52,12 @@ function App() {
         PPT 생성
       </button>
       <p>{message}</p>
+
+      <section>
+        <h2>Ping Pong Test</h2>
+        <button onClick={handlePingPong}>핑퐁 버튼</button>
+        <p>{pingPong}</p>
+      </section>
     </div>
   );
 }

@@ -2,11 +2,12 @@
   "name": "bibleslide",
   "version": "1.0.0",
   "description": "성경 구절 PPT 생성기 (\"Bible\" Verse to PPT \"Slide\")",
-  "main": "src/main/index.ts",
+  "main": "app/index.ts",
+  "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "electron:dev": "concurrently \"vite\" \"wait-on http://localhost:3000 && electron .\"",
+    "dev": "cross-env NODE_ENV=development concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\"",
+    "start": "electron .",
+    "build": "vite build && electron-builder",
     "dist": "electron-builder",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,13 +17,12 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/kangdy25/BibleSlide/issues"
   },
   "homepage": "https://github.com/kangdy25/BibleSlide#readme",
   "dependencies": {
-    "electron": "^29.0.0",
     "express": "^5.1.0",
     "pptxgenjs": "^3.12.0",
     "react": "^19.1.0",
@@ -32,17 +32,21 @@
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.6.0",
-    "concurrently": "^8.2.0",
+    "concurrently": "^9.0.1",
+    "cross-env": "^7.0.3",
+    "electron": "^37.2.6",
     "electron-builder": "^24.0.0",
+    "globals": "^16.3.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
-    "vite": "^7.0.0",
-    "wait-on": "^7.0.0"
+    "vite": "^7.1.2",
+    "wait-on": "^8.0.1"
   },
   "build": {
     "appId": "com.kangdy25.bibleslide",
     "files": [
       "dist/**/*",
-      "src/main/**/*",
+      "src/**",
       "node_modules/**/*",
       "package.json"
     ],
