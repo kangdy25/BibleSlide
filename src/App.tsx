@@ -1,4 +1,5 @@
 import { useState } from "react";
+import './App.css';
 
 declare global {
   interface Window {
@@ -9,6 +10,7 @@ declare global {
     };
   }
 }
+
 function App() {
   const [input, setInput] = useState("");
   const [message, setMessage] = useState("");
