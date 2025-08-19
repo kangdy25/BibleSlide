@@ -5,7 +5,7 @@
   "main": "app/index.ts",
   "type": "module",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\"",
+    "dev": "cross-env NODE_ENV=development concurrently \"tsc --watch app/preload.ts\" \"vite\" \"wait-on http://localhost:5173 && electron .\"",
     "start": "electron .",
     "build": "vite build && electron-builder",
     "dist": "electron-builder",
