@@ -23,7 +23,9 @@
   },
   "homepage": "https://github.com/kangdy25/BibleSlide#readme",
   "dependencies": {
+    "@radix-ui/themes": "^3.2.1",
     "express": "^5.1.0",
+    "lucide-react": "^0.540.0",
     "pptxgenjs": "^3.12.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
