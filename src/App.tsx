@@ -61,7 +61,7 @@ function App() {
           <div className={styles.exportSection}>
             <button className={styles.exportButton}>
               <Download className={styles.buttonIcon} />
-              <span>PPT로 내보내기</span>
+              <span>PPT 다운로드</span>
             </button>
           </div>
         </div>
