@@ -49,16 +49,15 @@ function App() {
           {/* Single Large Preview Panel */}
           <div className={styles.previewPanel}>
               <div className={styles.verseDisplay} style={{ 
-                  fontSize: `${textSize[0]}px`, 
-                  letterSpacing: `${letterSpacing[0]}px`,
-                  lineHeight: `${lineHeight[0]}`
-                }}>
+                fontSize: `${textSize[0]}px`, 
+                letterSpacing: `${letterSpacing[0]}px`,
+                lineHeight: `${lineHeight[0]}`
+              }}>
                   <p className={styles.verseLine}>
                     {verseText}
                   </p>
               </div>
           </div>
-
           <div className={styles.exportSection}>
             <button className={styles.exportButton}>
               <Download className={styles.buttonIcon} />

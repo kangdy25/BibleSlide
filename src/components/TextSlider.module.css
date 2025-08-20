@@ -1,0 +1,56 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sectionLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(249, 250, 251, 1);
+}
+
+.sliderRoot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  touch-action: none;
+  width: 100%;
+  height: 20px;
+}
+
+.sliderTrack {
+  background: rgba(255, 255, 255, 0.2);
+  position: relative;
+  flex-grow: 1;
+  border-radius: 9999px;
+  height: 3px;
+}
+
+.sliderRange {
+  position: absolute;
+  background: rgba(59, 130, 246, 1);
+  border-radius: 9999px;
+  height: 100%;
+}
+
+.sliderThumb {
+  display: block;
+  width: 20px;
+  height: 20px;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease;
+}
+
+.sliderThumb:hover {
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.4);
+}
+
+.sliderThumb:focus {
+  outline: none;
+  box-shadow: 0 0 0 5px rgba(59, 130, 246, 0.3);
+}
