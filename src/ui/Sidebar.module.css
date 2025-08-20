@@ -1,0 +1,227 @@
+.sidebar {
+  backdrop-filter: blur(32px);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 0.75rem;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  height: fit-content;
+  box-sizing: border-box;
+}
+
+.sidebarContent {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sectionLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(249, 250, 251, 1);
+}
+
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.radioItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.radioButton {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s ease;
+}
+
+.radioButton:hover {
+  border-color: rgba(59, 130, 246, 0.5);
+}
+
+.radioButton[data-state="checked"] {
+  border-color: rgba(59, 130, 246, 1);
+}
+
+.radioIndicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(59, 130, 246, 1);
+}
+
+.radioLabel {
+  font-size: 0.875rem;
+  color: rgba(249, 250, 251, 1);
+  cursor: pointer;
+}
+
+.sliderRoot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  touch-action: none;
+  width: 100%;
+  height: 20px;
+}
+
+.sliderTrack {
+  background: rgba(255, 255, 255, 0.2);
+  position: relative;
+  flex-grow: 1;
+  border-radius: 9999px;
+  height: 3px;
+}
+
+.sliderRange {
+  position: absolute;
+  background: rgba(59, 130, 246, 1);
+  border-radius: 9999px;
+  height: 100%;
+}
+
+.sliderThumb {
+  display: block;
+  width: 20px;
+  height: 20px;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease;
+}
+
+.sliderThumb:hover {
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.4);
+}
+
+.sliderThumb:focus {
+  outline: none;
+  box-shadow: 0 0 0 5px rgba(59, 130, 246, 0.3);
+}
+
+.selectTrigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(249, 250, 251, 1);
+  cursor: pointer;
+  backdrop-filter: blur(24px);
+  transition: border-color 0.2s ease;
+  width: 100%;
+}
+
+.selectTrigger:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.selectTrigger:focus {
+  outline: none;
+  border-color: rgba(59, 130, 246, 0.5);
+}
+
+.selectIcon {
+  width: 16px;
+  height: 16px;
+  color: rgba(249, 250, 251, 0.7);
+}
+
+.selectContent {
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.9);
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(32px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+.selectViewport {
+  padding: 0.25rem;
+}
+
+.selectItem {
+  font-size: 0.875rem;
+  line-height: 1;
+  color: rgba(249, 250, 251, 1);
+  border-radius: 0.375rem;
+  display: flex;
+  align-items: center;
+  height: 35px;
+  padding: 0 35px 0 25px;
+  position: relative;
+  user-select: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.selectItem[data-disabled] {
+  color: rgba(249, 250, 251, 0.5);
+  pointer-events: none;
+}
+
+.selectItem[data-highlighted] {
+  outline: none;
+  background: rgba(59, 130, 246, 0.2);
+}
+
+.selectItemIndicator {
+  position: absolute;
+  left: 0;
+  width: 25px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttonSection {
+  padding-top: 1rem;
+}
+
+.addButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: rgba(59, 130, 246, 1);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.addButton:hover {
+  background: rgba(59, 130, 246, 0.9);
+}
+
+.buttonIcon {
+  width: 16px;
+  height: 16px;
+}
