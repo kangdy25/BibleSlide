@@ -17,8 +17,6 @@ export interface SidebarProps {
   setLineHeight: Dispatch<SetStateAction<number[]>>;
   font: string;
   setFont: Dispatch<SetStateAction<string>>;
-  fontColor: string;
-  setFontColor: Dispatch<SetStateAction<string>>;
 }
 
 const Sidebar = ({
@@ -31,9 +29,7 @@ const Sidebar = ({
   lineHeight,
   setLineHeight,
   font,
-  setFont,
-  fontColor,
-  setFontColor,
+  setFont
 }: SidebarProps) => {
 
   const allTextSliderProps = {
@@ -76,16 +72,11 @@ const Sidebar = ({
                 </Select.Portal>
               </Select.Root>
             </div>
-
-            {/* 텍스트 색상 */}
-            <div className={styles.section}>
-              <label className={styles.sectionLabel}>텍스트 색상</label>
-              <input
-                type="color"
-                value={fontColor}
-                onChange={e => setFontColor(e.target.value)}
-                className={styles.colorInput}
-              />
+            
+            <div className={styles.exportSection}>
+              <button className={styles.exportButton}>
+                <span>PPT 제작하기</span>
+              </button>
             </div>
           </div>
         </div>
