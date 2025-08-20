@@ -1,24 +1,20 @@
 import { useState } from "react";
 import './App.css';
 import styles from './BibleSlide.module.css';
-
-import * as ToggleGroup from "@radix-ui/react-toggle-group"
-import * as Switch from "@radix-ui/react-switch"
 import * as RadioGroup from "@radix-ui/react-radio-group"
 import * as Select from "@radix-ui/react-select"
 import * as Slider from "@radix-ui/react-slider"
-import { Download, Moon, Sun, ChevronDown, Check, } from "lucide-react"
+import { Download, ChevronDown, Check } from "lucide-react"
+import Header from "./ui/Header";
 
 function App() {
-  const [verseInput, setVerseInput] = useState("창1:1-3")
+  const [verseInput, setVerseInput] = useState("")
   const [slideMethod, setSlideMethod] = useState("성경 한 구절당 1장")
   const [textSize, setTextSize] = useState([24])
   const [letterSpacing, setLetterSpacing] = useState([0]); // 자간 (px)
   const [lineHeight, setLineHeight] = useState([1.5]);   // 줄간격 (em 단위)
-  const [font, setFont] = useState("Pretendard")
-  const [background, setBackground] = useState("기본 배경")
-  const [bibleVersion, setBibleVersion] = useState("개역개정")
-  const [isDarkMode, setIsDarkMode] = useState(true)
+  const [font, setFont] = useState("Pretendard");
+  const [isDarkMode, setIsDarkMode] = useState(true);
 
   const [fontColor, setFontColor] = useState("#000000"); // 텍스트 색상
   
@@ -29,42 +25,7 @@ function App() {
 
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
-        <div className={styles.headerContent}>
-          <div className={styles.headerLeft}>
-            <div className={styles.macosControls}>
-              <button className={`${styles.macosControl} ${styles.close}`}></button>
-              <button className={`${styles.macosControl} ${styles.minimize}`}></button>
-              <button className={`${styles.macosControl} ${styles.maximize}`}></button>
-            </div>
-            <h1 className={styles.title}>BibleSlide</h1>
-          </div>
-
-          <div className={styles.headerRight}>
-            <ToggleGroup.Root
-              className={styles.toggleGroup}
-              type="single"
-              value={bibleVersion}
-              onValueChange={(value) => value && setBibleVersion(value)}
-            >
-              {["개역개정", "개역한글", "새번역", "KJV", "NIV"].map((version) => (
-                <ToggleGroup.Item key={version} className={styles.toggleItem} value={version}>
-                  {version}
-                </ToggleGroup.Item>
-              ))}
-            </ToggleGroup.Root>
-
-            <div className={styles.switchContainer}>
-              <Switch.Root className={styles.switchRoot} checked={isDarkMode} onCheckedChange={setIsDarkMode}>
-                <Switch.Thumb className={styles.switchThumb}>
-                  {isDarkMode ? <Sun className={styles.switchIcon} /> : <Moon className={styles.switchIcon} />}
-                </Switch.Thumb>
-              </Switch.Root>
-            </div>
-          </div>
-        </div>
-      </header>
-
+      <Header isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode}/>
       <div className={styles.mainContent}>
         <div className={styles.sidebar}>
           <div className={styles.sidebarContent}>
