@@ -1,7 +1,5 @@
 import { useState } from "react";
 import './App.css';
-import styles from './BibleSlide.module.css';
-
 import Header from "./ui/Header";
 import Sidebar from "./ui/Sidebar";
 import Content from "./ui/Content";
@@ -35,11 +33,11 @@ function App() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className="container">
       <Header isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode}/>
-      <div className={styles.mainContent}>
+      <div className="mainContent">
         <Sidebar {...allSidebarProps}/>
-        <Content textSize={textSize} letterSpacing={letterSpacing} lineHeight={lineHeight}/>
+        <Content textSize={textSize} letterSpacing={letterSpacing} lineHeight={lineHeight} font={font}/>
       </div>
     </div>
   )
