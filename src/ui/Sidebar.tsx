@@ -1,5 +1,5 @@
-import styles from './Sidebar.module.css'
-import { Dispatch, SetStateAction } from "react";
+import styles from './Sidebar.module.css';
+import { Dispatch, SetStateAction } from 'react';
 import SearchInput from '../components/SearchInput';
 import TextSlider from '../components/TextSlider';
 import SelectFont from '../components/SelectFont';
@@ -27,39 +27,38 @@ const Sidebar = ({
   lineHeight,
   setLineHeight,
   font,
-  setFont
+  setFont,
 }: SidebarProps) => {
-
   const allTextSliderProps = {
     textSize,
     setTextSize,
     letterSpacing,
     setLetterSpacing,
     lineHeight,
-    setLineHeight
-  }
+    setLineHeight,
+  };
 
   return (
     <div className={styles.sidebar}>
-          <div className={styles.sidebarContent}>
-            {/* PPT로 제작할 성경을 입력 받을 Input */}
-            <SearchInput verseInput={verseInput} setVerseInput={setVerseInput} />
-            
-            {/* 글자 옵션을 정하는 Slider */}
-            <TextSlider {...allTextSliderProps} />
+      <div className={styles.sidebarContent}>
+        {/* PPT로 제작할 성경을 입력 받을 Input */}
+        <SearchInput verseInput={verseInput} setVerseInput={setVerseInput} />
 
-            {/* 폰트를 지정할 드롭다운 */}
-            <SelectFont font={font} setFont={setFont} />
+        {/* 글자 옵션을 정하는 Slider */}
+        <TextSlider {...allTextSliderProps} />
 
-            {/* PPT 제작 버튼 */}
-            <div className={styles.exportSection}>
-              <button className={styles.exportButton}>
-                <span>PPT 제작하기</span>
-              </button>
-            </div>
-          </div>
+        {/* 폰트를 지정할 드롭다운 */}
+        <SelectFont font={font} setFont={setFont} />
+
+        {/* PPT 제작 버튼 */}
+        <div className={styles.exportSection}>
+          <button className={styles.exportButton}>
+            <span>PPT 제작하기</span>
+          </button>
         </div>
-  )
-}
+      </div>
+    </div>
+  );
+};
 
-export default Sidebar
+export default Sidebar;

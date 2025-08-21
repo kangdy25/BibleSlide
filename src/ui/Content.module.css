@@ -10,8 +10,10 @@
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 0.75rem;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  overflow: hidden;   /* 부모 박스는 고정 */
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  overflow: hidden; /* 부모 박스는 고정 */
   position: relative; /* 자식 절대 배치 대비 */
 }
 
@@ -19,7 +21,7 @@
   background: linear-gradient(135deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.4) 100%);
   border-radius: 0.5rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 2rem;  
+  padding: 2rem;
   height: 100%;
   box-sizing: border-box;
   text-align: left;
@@ -48,10 +50,14 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5), inset 0 0 10px rgba(59, 130, 246, 0.1);
+  box-shadow:
+    0 0 10px rgba(59, 130, 246, 0.5),
+    inset 0 0 10px rgba(59, 130, 246, 0.1);
 }
 
 .exportButton:hover {
   background: rgba(0, 0, 0, 0.9);
-  box-shadow: 0 0 15px rgba(59, 130, 246, 0.7), inset 0 0 15px rgba(59, 130, 246, 0.15);
+  box-shadow:
+    0 0 15px rgba(59, 130, 246, 0.7),
+    inset 0 0 15px rgba(59, 130, 246, 0.15);
 }

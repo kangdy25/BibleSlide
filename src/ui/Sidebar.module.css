@@ -3,7 +3,9 @@
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 0.75rem;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
   height: fit-content;
   box-sizing: border-box;
 }
@@ -35,10 +37,14 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5), inset 0 0 10px rgba(59, 130, 246, 0.1);
+  box-shadow:
+    0 0 10px rgba(59, 130, 246, 0.5),
+    inset 0 0 10px rgba(59, 130, 246, 0.1);
 }
 
-.exportButton:hover {  
+.exportButton:hover {
   background: rgba(59, 130, 246, 1);
-  box-shadow: 0 0 15px rgba(59, 130, 246, 0.7), inset 0 0 15px rgba(59, 130, 246, 0.15);
+  box-shadow:
+    0 0 15px rgba(59, 130, 246, 0.7),
+    inset 0 0 15px rgba(59, 130, 246, 0.15);
 }

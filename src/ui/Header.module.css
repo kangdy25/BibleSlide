@@ -22,8 +22,8 @@
 }
 
 .logo {
-    padding: 10px 5px;
-    height: 2.5rem;
+  padding: 10px 5px;
+  height: 2.5rem;
 }
 
 .title {
@@ -59,7 +59,7 @@
   color: rgba(249, 250, 251, 1);
 }
 
-.toggleItem[data-state="on"] {
+.toggleItem[data-state='on'] {
   background: rgba(59, 130, 246, 1);
   color: white;
   border-color: rgba(59, 130, 246, 1);
@@ -82,7 +82,7 @@
   transition: background-color 0.2s ease;
 }
 
-.switchRoot[data-state="checked"] {
+.switchRoot[data-state='checked'] {
   background: rgba(59, 130, 246, 1);
 }
 
@@ -98,7 +98,7 @@
   will-change: transform;
 }
 
-.switchRoot[data-state="checked"] .switchThumb {
+.switchRoot[data-state='checked'] .switchThumb {
   transform: translateX(19px);
 }
 
