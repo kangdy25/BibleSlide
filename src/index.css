@@ -1,0 +1,51 @@
+/* CSS 변수 설정 */
+:root {
+  --font-sans: 'Noto Sans KR', sans-serif;
+  --font-pretendard: 'Pretendard', sans-serif;
+  --font-buenard: 'Buenard', serif;
+
+  --background: oklch(0.1 0 0);
+  --foreground: oklch(0.98 0 0);
+  --border: oklch(0.98 0 0 / 0.2);
+}
+
+* {
+  border-color: var(--border);
+  outline-color: oklch(0.98 0 0 / 0.3);
+}
+
+body {
+  font-family: var(--font-pretendard), var(--font-sans), sans-serif;
+  color: var(--foreground);
+  background-color: var(--background);
+
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 사용자 정의 클래스들 */
+.glass {
+  backdrop-filter: blur(16px); /* Tailwind의 backdrop-blur-xl */
+  background-color: rgba(255, 255, 255, 0.03); /* Tailwind의 bg-white/3 */
+  border: 1px solid rgba(255, 255, 255, 0.08); /* Tailwind의 border-white/8 */
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.glass-strong {
+  backdrop-filter: blur(24px); /* Tailwind의 backdrop-blur-2xl */
+  background-color: rgba(255, 255, 255, 0.05); /* Tailwind의 bg-white/5 */
+  border: 1px solid rgba(255, 255, 255, 0.15); /* Tailwind의 border-white/15 */
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.neon-border {
+  box-shadow:
+    0 0 10px rgba(59, 130, 246, 0.5),
+    inset 0 0 10px rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.6);
+}
