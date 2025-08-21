@@ -1,9 +1,15 @@
 .container {
   box-sizing: border-box;
   background: linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #000000 100%);
-  background-image: radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.08) 0%, transparent 60%),
+  background-image:
+    radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.08) 0%, transparent 60%),
     radial-gradient(circle at 75% 75%, rgba(236, 72, 153, 0.08) 0%, transparent 60%);
-  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-family:
+    'Pretendard',
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    sans-serif;
   color: rgba(249, 250, 251, 1);
 }
 
@@ -14,5 +20,5 @@
   box-sizing: border-box;
   display: grid;
   grid-template-columns: 2fr 5fr;
-  gap: 1.25rem; 
+  gap: 1.25rem;
 }
