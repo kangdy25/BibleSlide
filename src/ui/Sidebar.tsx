@@ -38,6 +38,31 @@ const Sidebar = ({
     setLineHeight,
   };
 
+  const handleGeneratePpt = async () => {
+    // 폰트 크기, 자간, 행간은 배열 형태이므로 첫 번째 값을 사용합니다.
+    const data = {
+      title: verseInput,
+      verse: verseInput,
+      font: font,
+      textSize: textSize[0],
+      letterSpacing: letterSpacing[0],
+      lineHeight: lineHeight[0],
+    };
+
+    try {
+      // preload.ts를 통해 노출된 API 호출
+      const result = await window.electronAPI.generateSlide(data);
+      if (result.success) {
+        alert(result.message);
+      } else {
+        alert(`PPT 생성 실패: ${result.message}`);
+      }
+    } catch (error) {
+      console.error('IPC 통신 오류:', error);
+      alert('PPT 생성 중 오류가 발생했습니다.');
+    }
+  };
+
   return (
     <div className={styles.sidebar}>
       <div className={styles.sidebarContent}>
@@ -52,7 +77,7 @@ const Sidebar = ({
 
         {/* PPT 제작 버튼 */}
         <div className={styles.exportSection}>
-          <button className={styles.exportButton}>
+          <button className={styles.exportButton} onClick={handleGeneratePpt}>
             <span>PPT 제작하기</span>
           </button>
         </div>
