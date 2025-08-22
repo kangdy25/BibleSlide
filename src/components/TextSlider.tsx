@@ -1,5 +1,4 @@
 import styles from './TextSlider.module.css';
-
 import * as Slider from '@radix-ui/react-slider';
 import { Dispatch, SetStateAction } from 'react';
 
