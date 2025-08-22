@@ -39,7 +39,6 @@ const Sidebar = ({
   };
 
   const handleGeneratePpt = async () => {
-    // 폰트 크기, 자간, 행간은 배열 형태이므로 첫 번째 값을 사용합니다.
     const data = {
       title: verseInput,
       verse: verseInput,
