@@ -53,11 +53,11 @@ ipcMain.handle('generate-slide', async (event, data: { input: string; version?: 
   try {
     const { input, version = 'GAE' } = data;
     const verses = fetchVerses(input, version);
-    console.log(verses);
+    console.log(input);
 
     let pptx: any; // pptx 객체는 generatePPT에서 관리
     verses.forEach((verse, idx) => {
-      const title = `${input.split(':')[0]}:${idx + 1}`;
+      const title = `${verse.split(':')[0]}:${idx + 1}`;
       pptx = generatePPT(title, verse, pptx); // pptx가 undefined이면 새로 생성, 있으면 슬라이드 추가
     });
 
