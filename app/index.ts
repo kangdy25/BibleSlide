@@ -2,6 +2,7 @@ import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { generatePPT } from './main/utils/generatePPT.ts';
+import { fetchVerses } from './main/utils/parseVerse.ts';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -35,22 +36,35 @@ app.whenReady().then(() => {
   });
 });
 
-ipcMain.handle('generate-slide', async (event, data) => {
-  // UI 데이터를 사용하지 않고, 테스트용 고정 데이터를 사용합니다.
-  const testTitle = '요한복음 6:22';
-  const testContent = `이튿날 바다 건너편에 서 있던 무리가 배 한 척 외에
- 다른 배가 거기 없는 것과 또 어제 예수께서
- 제자들과 함께 그 배에 오르지 아니하시고 제자들만
- 가는 것을 보았더니
- `;
+// -------------------------
+// IPC 핸들러: 성경 구절 가져오기
+// -------------------------
 
+ipcMain.handle('fetch-verse', (event, input: string, version: string = 'GAE') => {
   try {
-    // createPPT 함수에 고정된 데이터를 전달하여 PPT 객체 생성
-    const pptx = generatePPT(testTitle, testContent);
+    const verses = fetchVerses(input, version);
+    return verses; // 배열 반환
+  } catch (err: any) {
+    return [`Error: ${err.message}`];
+  }
+});
 
+ipcMain.handle('generate-slide', async (event, data: { input: string; version?: string }) => {
+  try {
+    const { input, version = 'GAE' } = data;
+    const verses = fetchVerses(input, version);
+    console.log(verses);
+
+    let pptx: any; // pptx 객체는 generatePPT에서 관리
+    verses.forEach((verse, idx) => {
+      const title = `${input.split(':')[0]}:${idx + 1}`;
+      pptx = generatePPT(title, verse, pptx); // pptx가 undefined이면 새로 생성, 있으면 슬라이드 추가
+    });
+
+    // 파일 저장 다이얼로그
     const { filePath } = await dialog.showSaveDialog({
       title: 'Save PowerPoint File',
-      defaultPath: `${testTitle}.pptx`,
+      defaultPath: `${input.replace(':', '-')}.pptx`,
       filters: [{ name: 'PowerPoint', extensions: ['pptx'] }],
     });
 
@@ -58,10 +72,16 @@ ipcMain.handle('generate-slide', async (event, data) => {
       await pptx.writeFile({ fileName: filePath });
       return { success: true, message: `File saved to ${filePath}` };
     }
+
     return { success: false, message: 'File save cancelled' };
-  } catch (error: any) {
-    console.error('Error generating slide:', error);
-    return { success: false, message: `Error generating slide: ${error.message}` };
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      console.error('Error generating slide:', err.message);
+      return { success: false, message: `Error: ${err.message}` };
+    } else {
+      console.error('Unexpected error:', err);
+      return { success: false, message: 'Unexpected error occurred' };
+    }
   }
 });
 

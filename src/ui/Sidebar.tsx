@@ -1,5 +1,5 @@
 import styles from './Sidebar.module.css';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, version } from 'react';
 import SearchInput from '../components/SearchInput';
 import TextSlider from '../components/TextSlider';
 import SelectFont from '../components/SelectFont';
@@ -39,13 +39,22 @@ const Sidebar = ({
   };
 
   const handleGeneratePpt = async () => {
+    // verseInput이 비어있으면 함수를 종료합니다.
+    if (!verseInput) {
+      alert('성경 구절을 입력해주세요.');
+      return;
+    }
+    console.log(verseInput);
+
+    // IPC 통신을 통해 메인 프로세스로 데이터 전송
     const data = {
-      title: verseInput,
-      verse: verseInput,
-      font: font,
-      textSize: textSize[0],
-      letterSpacing: letterSpacing[0],
-      lineHeight: lineHeight[0],
+      input: verseInput,
+      // title: verseInput, // 제목으로 사용
+      // verse: verseInput, // 구절 입력값으로 사용
+      // font: font,
+      // textSize: textSize[0],
+      // letterSpacing: letterSpacing[0],
+      // lineHeight: lineHeight[0],
     };
 
     try {

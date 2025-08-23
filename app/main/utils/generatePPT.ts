@@ -1,24 +1,23 @@
 import PptxGenJS from 'pptxgenjs';
 
 /**
- * 주어진 데이터로 PPTX 객체를 생성합니다.
+ * 주어진 데이터로 PPTX 객체를 생성하거나 기존 PPTX에 슬라이드를 추가합니다.
  * @param title - 슬라이드 상단 제목 텍스트
  * @param content - 슬라이드 중앙 본문 내용
- * @returns 생성된 PptxGenJS 객체
+ * @param pptx - 기존 PptxGenJS 객체 (없으면 새로 생성)
+ * @returns 생성 또는 수정된 PptxGenJS 객체
  */
 
-export function generatePPT(title: string, content: string): PptxGenJS {
-  // pptxgenjs 라이브러리 불러오기
-  let pptx = new PptxGenJS();
-  let slide = pptx.addSlide();
+export function generatePPT(title: string, content: string, pptx?: PptxGenJS): PptxGenJS {
+  // 없으면 새 PPTX 객체 생성
+  if (!pptx) pptx = new PptxGenJS();
 
-  // 배경 이미지 경로를 함수 외부에서 전달받는 것이 더 유연합니다.
-  // 이 예제에서는 편의상 하드코딩된 경로를 사용합니다.
+  const slide = pptx.addSlide();
 
-  // Mac OS 버전
-  // slide.background = { path: '/Users/kangdy25/Programming/Web/BibleSlide/public/pptBg.png' };
-  // Window 버전
-  slide.background = { path: 'C:/Programming/Web/BibleSlide/public/pptBg.png' };
+  // 배경 이미지 경로
+  slide.background = { path: '/Users/kangdy25/Programming/Web/BibleSlide/public/pptBg.png' };
+  // Windows 경로 예시
+  // slide.background = { path: 'C:/Programming/Web/BibleSlide/public/pptBg.png' };
 
   // 투명한 검정색 사각형 추가
   slide.addShape(pptx.ShapeType.rect, {
@@ -29,7 +28,7 @@ export function generatePPT(title: string, content: string): PptxGenJS {
     fill: { color: '000000', transparency: 60 },
   });
 
-  // 상단 제목 추가 (외부에서 전달받은 title 사용)
+  // 상단 제목 추가
   slide.addText(title, {
     x: 0,
     y: 0,
@@ -40,7 +39,7 @@ export function generatePPT(title: string, content: string): PptxGenJS {
     color: 'FFFFFF',
   });
 
-  // 중앙 본문 내용 추가 (외부에서 전달받은 content 사용)
+  // 중앙 본문 내용 추가
   slide.addText(content, {
     x: '7.5%',
     y: '15%',
@@ -53,7 +52,7 @@ export function generatePPT(title: string, content: string): PptxGenJS {
     valign: 'top',
   });
 
-  // 하단 출처 추가 (예제: '요한복음 6장'은 title에서 추출)
+  // 하단 출처 추가
   const sourceText = title.split(' ')[0] + ' ' + title.split(' ')[1].split(':')[0] + '장';
   slide.addText(sourceText, {
     x: 0,
@@ -70,16 +69,15 @@ export function generatePPT(title: string, content: string): PptxGenJS {
   // 좌측 상단
   slide.addShape(pptx.ShapeType.line, { x: 0.5, y: 0.75, w: 0.5, h: 0, ...cornerLineStyle });
   slide.addShape(pptx.ShapeType.line, { x: 0.5, y: 0.75, w: 0, h: 0.5, ...cornerLineStyle });
-  // 우측 상단 (위치와 크기 조정)
+  // 우측 상단
   slide.addShape(pptx.ShapeType.line, { x: 9.0, y: 0.75, w: 0.5, h: 0, ...cornerLineStyle });
   slide.addShape(pptx.ShapeType.line, { x: 9.5, y: 0.75, w: 0, h: 0.5, ...cornerLineStyle });
-  // 좌측 하단 (위치와 크기 조정)
+  // 좌측 하단
   slide.addShape(pptx.ShapeType.line, { x: 0.5, y: 5, w: 0.5, h: 0, ...cornerLineStyle });
   slide.addShape(pptx.ShapeType.line, { x: 0.5, y: 4.5, w: 0, h: 0.5, ...cornerLineStyle });
-  // 우측 하단 (위치와 크기 조정)
+  // 우측 하단
   slide.addShape(pptx.ShapeType.line, { x: 9.0, y: 5, w: 0.5, h: 0, ...cornerLineStyle });
   slide.addShape(pptx.ShapeType.line, { x: 9.5, y: 4.5, w: 0, h: 0.5, ...cornerLineStyle });
 
-  // 생성된 pptx 객체를 반환
   return pptx;
 }
