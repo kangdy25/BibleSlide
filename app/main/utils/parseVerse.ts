@@ -14,7 +14,6 @@ interface ParsedInput {
 export function parseInput(input: string): ParsedInput {
   const regex = /^(\D+)(\d+):(\d+)(?:-(\d+))?$/;
   const match = input.match(regex);
-  console.log(match);
 
   if (!match) {
     throw new Error(`잘못된 입력 형식입니다: ${input}`);
