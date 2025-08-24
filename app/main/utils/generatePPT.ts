@@ -40,7 +40,7 @@ export function generatePPT(title: string, content: string, pptx?: PptxGenJS): P
   // 중앙 본문 내용 추가
   slide.addText(content, {
     x: '7.5%',
-    y: '15%',
+    y: '22.5%',
     w: '85%',
     h: '70%',
     align: 'left',
@@ -65,8 +65,8 @@ export function generatePPT(title: string, content: string, pptx?: PptxGenJS): P
   // L자 모양 테두리 추가
   const cornerLineStyle = { shape: pptx.ShapeType.line, line: { color: 'FFFFFF', width: 5 } };
   // 좌측 상단
-  slide.addShape(pptx.ShapeType.line, { x: 0.475, y: 0.75, w: 0.75, h: 0, ...cornerLineStyle });
-  slide.addShape(pptx.ShapeType.line, { x: 0.5, y: 0.75, w: 0, h: 0.5, ...cornerLineStyle });
+  slide.addShape(pptx.ShapeType.line, { x: 0.475, y: 1, w: 0.75, h: 0, ...cornerLineStyle });
+  slide.addShape(pptx.ShapeType.line, { x: 0.5, y: 1, w: 0, h: 0.5, ...cornerLineStyle });
   // 우측 상단
   // slide.addShape(pptx.ShapeType.line, { x: 8.775, y: 0.75, w: 0.75, h: 0, ...cornerLineStyle });
   // slide.addShape(pptx.ShapeType.line, { x: 9.5, y: 0.75, w: 0, h: 0.5, ...cornerLineStyle });
