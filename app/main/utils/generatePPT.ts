@@ -14,10 +14,8 @@ export function generatePPT(title: string, content: string, pptx?: PptxGenJS): P
 
   const slide = pptx.addSlide();
 
-  // 배경 이미지 경로
-  slide.background = { path: '/Users/kangdy25/Programming/Web/BibleSlide/public/pptBg.png' };
-  // Windows 경로 예시
-  // slide.background = { path: 'C:/Programming/Web/BibleSlide/public/pptBg.png' };
+  // 배경색을 검정색(#000000)으로 지정
+  slide.background = { fill: '000000' };
 
   // 투명한 검정색 사각형 추가
   slide.addShape(pptx.ShapeType.rect, {
@@ -65,18 +63,18 @@ export function generatePPT(title: string, content: string, pptx?: PptxGenJS): P
   });
 
   // L자 모양 테두리 추가
-  const cornerLineStyle = { shape: pptx.ShapeType.line, line: { color: 'FFFFFF', width: 3 } };
+  const cornerLineStyle = { shape: pptx.ShapeType.line, line: { color: 'FFFFFF', width: 5 } };
   // 좌측 상단
-  slide.addShape(pptx.ShapeType.line, { x: 0.5, y: 0.75, w: 0.5, h: 0, ...cornerLineStyle });
+  slide.addShape(pptx.ShapeType.line, { x: 0.475, y: 0.75, w: 0.75, h: 0, ...cornerLineStyle });
   slide.addShape(pptx.ShapeType.line, { x: 0.5, y: 0.75, w: 0, h: 0.5, ...cornerLineStyle });
   // 우측 상단
-  slide.addShape(pptx.ShapeType.line, { x: 9.0, y: 0.75, w: 0.5, h: 0, ...cornerLineStyle });
-  slide.addShape(pptx.ShapeType.line, { x: 9.5, y: 0.75, w: 0, h: 0.5, ...cornerLineStyle });
-  // 좌측 하단
-  slide.addShape(pptx.ShapeType.line, { x: 0.5, y: 5, w: 0.5, h: 0, ...cornerLineStyle });
-  slide.addShape(pptx.ShapeType.line, { x: 0.5, y: 4.5, w: 0, h: 0.5, ...cornerLineStyle });
+  // slide.addShape(pptx.ShapeType.line, { x: 8.775, y: 0.75, w: 0.75, h: 0, ...cornerLineStyle });
+  // slide.addShape(pptx.ShapeType.line, { x: 9.5, y: 0.75, w: 0, h: 0.5, ...cornerLineStyle });
+  // // 좌측 하단
+  // slide.addShape(pptx.ShapeType.line, { x: 0.475, y: 5, w: 0.75, h: 0, ...cornerLineStyle });
+  // slide.addShape(pptx.ShapeType.line, { x: 0.5, y: 4.5, w: 0, h: 0.5, ...cornerLineStyle });
   // 우측 하단
-  slide.addShape(pptx.ShapeType.line, { x: 9.0, y: 5, w: 0.5, h: 0, ...cornerLineStyle });
+  slide.addShape(pptx.ShapeType.line, { x: 8.775, y: 5, w: 0.75, h: 0, ...cornerLineStyle });
   slide.addShape(pptx.ShapeType.line, { x: 9.5, y: 4.5, w: 0, h: 0.5, ...cornerLineStyle });
 
   return pptx;
