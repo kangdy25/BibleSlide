@@ -1,3 +1,7 @@
+export type BibleVersion = '개역개정' | '개역한글' | '새번역' | 'KJV' | 'NIV';
+
+export const BIBLE_VERSIONS: BibleVersion[] = ['개역개정', '개역한글', '새번역', 'KJV', 'NIV'];
+
 export type BibleBook = {
   short: string;
   full: string;

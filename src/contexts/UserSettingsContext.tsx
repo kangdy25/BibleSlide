@@ -1,7 +1,8 @@
 import React, { createContext, useState, ReactNode, useMemo } from 'react';
+import { BibleVersion } from '../../app/main/constant/bible';
 
 interface UserSettings {
-  bibleVersion: '개역개정' | '개역한글' | '새번역' | 'KJV' | 'NIV';
+  bibleVersion: BibleVersion;
   font: string;
   fontColor: string;
   textSize: number;
@@ -34,7 +35,5 @@ export const UserSettingsProvider = ({ children }: UserSettingsProviderProps) =>
 
   const value = useMemo(() => ({ settings, setSettings }), [settings]);
 
-  return <UserSettingsContext.Provider value={value}>
-    {children}
-  </UserSettingsContext.Provider>;
+  return <UserSettingsContext.Provider value={value}>{children}</UserSettingsContext.Provider>;
 };

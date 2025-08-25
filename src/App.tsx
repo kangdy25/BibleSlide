@@ -13,8 +13,6 @@ function App() {
   const [font, setFont] = useState('Pretendard');
   const [fontColor, setFontColor] = useState('#000000'); // 텍스트 색상
 
-  const [isDarkMode, setIsDarkMode] = useState(true);
-
   const allSidebarProps = {
     verseInput,
     slideMethod,
@@ -34,15 +32,10 @@ function App() {
 
   return (
     <div className="container">
-      <Header isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
+      <Header />
       <div className="mainContent">
         <Sidebar {...allSidebarProps} />
-        <Content
-          textSize={textSize}
-          letterSpacing={letterSpacing}
-          lineHeight={lineHeight}
-          font={font}
-        />
+        <Content textSize={textSize} letterSpacing={letterSpacing} lineHeight={lineHeight} font={font} />
       </div>
     </div>
   );
