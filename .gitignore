@@ -137,3 +137,6 @@ dist
 
 # Bible data file
 /data
+
+# Mac OS
+.DS_Store
