@@ -8,7 +8,12 @@ import PptxGenJS from 'pptxgenjs';
  * @returns 생성 또는 수정된 PptxGenJS 객체
  */
 
-export function generatePPT(title: string, content: string, pptx?: PptxGenJS): PptxGenJS {
+export function generatePPT(
+  title: string,
+  subTitle: string,
+  content: string,
+  pptx?: PptxGenJS
+): PptxGenJS {
   // 없으면 새 PPTX 객체 생성
   if (!pptx) pptx = new PptxGenJS();
 
@@ -51,7 +56,7 @@ export function generatePPT(title: string, content: string, pptx?: PptxGenJS): P
   });
 
   // 하단 출처 추가
-  const sourceText = title.split(' ')[0] + ' ' + title.split(' ')[1].split(':')[0] + '장';
+  const sourceText = subTitle;
   slide.addText(sourceText, {
     x: 0,
     y: '85%',
@@ -65,7 +70,7 @@ export function generatePPT(title: string, content: string, pptx?: PptxGenJS): P
   // L자 모양 테두리 추가
   const cornerLineStyle = { shape: pptx.ShapeType.line, line: { color: 'FFFFFF', width: 5 } };
   // 좌측 상단
-  slide.addShape(pptx.ShapeType.line, { x: 0.475, y: 1, w: 0.75, h: 0, ...cornerLineStyle });
+  slide.addShape(pptx.ShapeType.line, { x: 0.465, y: 1, w: 0.75, h: 0, ...cornerLineStyle });
   slide.addShape(pptx.ShapeType.line, { x: 0.5, y: 1, w: 0, h: 0.5, ...cornerLineStyle });
   // 우측 상단
   // slide.addShape(pptx.ShapeType.line, { x: 8.775, y: 0.75, w: 0.75, h: 0, ...cornerLineStyle });
@@ -74,7 +79,7 @@ export function generatePPT(title: string, content: string, pptx?: PptxGenJS): P
   // slide.addShape(pptx.ShapeType.line, { x: 0.475, y: 5, w: 0.75, h: 0, ...cornerLineStyle });
   // slide.addShape(pptx.ShapeType.line, { x: 0.5, y: 4.5, w: 0, h: 0.5, ...cornerLineStyle });
   // 우측 하단
-  slide.addShape(pptx.ShapeType.line, { x: 8.775, y: 5, w: 0.75, h: 0, ...cornerLineStyle });
+  slide.addShape(pptx.ShapeType.line, { x: 8.785, y: 5, w: 0.75, h: 0, ...cornerLineStyle });
   slide.addShape(pptx.ShapeType.line, { x: 9.5, y: 4.5, w: 0, h: 0.5, ...cornerLineStyle });
 
   return pptx;
