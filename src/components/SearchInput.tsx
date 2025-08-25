@@ -8,7 +8,6 @@ export interface SearchInputProps {
 
 const SearchInput = ({ verseInput, setVerseInput }: SearchInputProps) => {
   return (
-    // Search Input
     <div className={styles.inputGroup}>
       <input
         className={styles.input}

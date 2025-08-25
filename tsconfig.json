@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "resolveJsonModule": true,
     "target": "ES2020",
     "module": "ESNext",
     "moduleResolution": "Node",
@@ -11,5 +12,5 @@
     "noEmit": true,
     "allowImportingTsExtensions": true
   },
-  "include": ["src", "app"]
+  "include": ["src", "app", "types"]
 }
