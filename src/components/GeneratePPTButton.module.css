@@ -1,0 +1,38 @@
+.exportSection {
+  display: flex;
+  justify-content: center;
+}
+
+.exportButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+  width: 100%;
+  background: rgb(56, 94, 231);
+  color: white;
+  border: 1px solid rgba(59, 130, 246, 0.6);
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow:
+    0 0 10px rgba(59, 130, 246, 0.5),
+    inset 0 0 10px rgba(59, 130, 246, 0.1);
+}
+
+.exportButton:hover {
+  background: rgba(59, 130, 246, 1);
+  box-shadow:
+    0 0 15px rgba(59, 130, 246, 0.7),
+    inset 0 0 15px rgba(59, 130, 246, 0.15);
+}
+
+.exportButton:disabled {
+  background-color: #555555;
+  color: white;
+  box-shadow: none;
+  border: none;
+}
