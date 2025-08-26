@@ -3,6 +3,7 @@ import { BibleVersion } from '../../app/main/constant/bible';
 
 interface UserSettings {
   bibleVersion: BibleVersion;
+  verseInput: string;
   font: string;
   fontColor: string;
   textSize: number;
@@ -25,6 +26,7 @@ interface UserSettingsProviderProps {
 export const UserSettingsProvider = ({ children }: UserSettingsProviderProps) => {
   const [settings, setSettings] = useState<UserSettings>({
     bibleVersion: '개역개정',
+    verseInput: '',
     font: 'Pretendard',
     fontColor: '#000000',
     textSize: 24,
