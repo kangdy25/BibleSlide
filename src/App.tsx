@@ -35,7 +35,7 @@ function App() {
       <Header />
       <div className="mainContent">
         <Sidebar {...allSidebarProps} />
-        <Content textSize={textSize} letterSpacing={letterSpacing} lineHeight={lineHeight} font={font} />
+        <Content />
       </div>
     </div>
   );
