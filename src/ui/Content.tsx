@@ -1,5 +1,4 @@
 import styles from './Content.module.css';
-import { Download } from 'lucide-react';
 import useUserSettings from '../contexts/useUserSettings';
 
 const Content = () => {
