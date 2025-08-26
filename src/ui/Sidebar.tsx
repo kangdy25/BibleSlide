@@ -6,35 +6,11 @@ import SelectFont from '../components/SelectFont';
 import useUserSettings from '../contexts/useUserSettings';
 
 export interface SidebarProps {
-  textSize: number[];
-  setTextSize: Dispatch<SetStateAction<number[]>>;
-  letterSpacing: number[];
-  setLetterSpacing: Dispatch<SetStateAction<number[]>>;
-  lineHeight: number[];
-  setLineHeight: Dispatch<SetStateAction<number[]>>;
   font: string;
   setFont: Dispatch<SetStateAction<string>>;
 }
 
-const Sidebar = ({
-  textSize,
-  setTextSize,
-  letterSpacing,
-  setLetterSpacing,
-  lineHeight,
-  setLineHeight,
-  font,
-  setFont,
-}: SidebarProps) => {
-  const allTextSliderProps = {
-    textSize,
-    setTextSize,
-    letterSpacing,
-    setLetterSpacing,
-    lineHeight,
-    setLineHeight,
-  };
-
+const Sidebar = ({ font, setFont }: SidebarProps) => {
   const { settings, setSettings } = useUserSettings();
 
   const handleGeneratePpt = async () => {
@@ -77,7 +53,7 @@ const Sidebar = ({
         <SearchInput />
 
         {/* 글자 옵션을 정하는 Slider */}
-        <TextSlider {...allTextSliderProps} />
+        <TextSlider />
 
         {/* 폰트를 지정할 드롭다운 */}
         <SelectFont font={font} setFont={setFont} />

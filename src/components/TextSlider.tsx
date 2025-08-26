@@ -1,31 +1,17 @@
 import styles from './TextSlider.module.css';
 import * as Slider from '@radix-ui/react-slider';
-import { Dispatch, SetStateAction } from 'react';
+import useUserSettings from '../contexts/useUserSettings';
 
-export interface TextSliderProps {
-  textSize: number[];
-  setTextSize: Dispatch<SetStateAction<number[]>>;
-  letterSpacing: number[];
-  setLetterSpacing: Dispatch<SetStateAction<number[]>>;
-  lineHeight: number[];
-  setLineHeight: Dispatch<SetStateAction<number[]>>;
-}
+const TextSlider = () => {
+  const { settings, setSettings } = useUserSettings();
 
-const TextSlider = ({
-  textSize,
-  setTextSize,
-  letterSpacing,
-  setLetterSpacing,
-  lineHeight,
-  setLineHeight,
-}: TextSliderProps) => {
   return (
     <div className={styles.section}>
-      <label className={styles.sectionLabel}>텍스트 크기: {textSize[0]}px</label>
+      <label className={styles.sectionLabel}>텍스트 크기: {settings.textSize}px</label>
       <Slider.Root
         className={styles.sliderRoot}
-        value={textSize}
-        onValueChange={setTextSize}
+        value={[settings.textSize]}
+        onValueChange={(value) => setSettings((prev) => ({ ...prev, textSize: value[0] }))}
         max={48}
         min={12}
         step={2}
@@ -37,14 +23,14 @@ const TextSlider = ({
       </Slider.Root>
 
       {/* 자간 */}
-      <label className={styles.sectionLabel}>자간: {letterSpacing[0]}px</label>
+      <label className={styles.sectionLabel}>자간: {settings.letterSpacing}px</label>
       <Slider.Root
         className={styles.sliderRoot}
-        value={letterSpacing}
+        value={[settings.letterSpacing]}
         min={0}
         max={20}
         step={1}
-        onValueChange={setLetterSpacing}
+        onValueChange={(value) => setSettings((prev) => ({ ...prev, letterSpacing: value[0] }))}
       >
         <Slider.Track className={styles.sliderTrack}>
           <Slider.Range className={styles.sliderRange} />
@@ -53,14 +39,14 @@ const TextSlider = ({
       </Slider.Root>
 
       {/* 줄간격 */}
-      <label className={styles.sectionLabel}>행간: {lineHeight[0]}</label>
+      <label className={styles.sectionLabel}>행간: {settings.lineHeight}</label>
       <Slider.Root
         className={styles.sliderRoot}
-        value={lineHeight}
+        value={[settings.lineHeight]}
         min={1}
         max={3}
-        step={0.1}
-        onValueChange={setLineHeight}
+        step={0.05}
+        onValueChange={(value) => setSettings((prev) => ({ ...prev, lineHeight: value[0] }))}
       >
         <Slider.Track className={styles.sliderTrack}>
           <Slider.Range className={styles.sliderRange} />
