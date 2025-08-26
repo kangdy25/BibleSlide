@@ -25,12 +25,6 @@ const Content = () => {
           <p className={styles.verseLine}>{verseText}</p>
         </div>
       </div>
-      <div className={styles.exportSection}>
-        <button className={styles.exportButton}>
-          <Download className={styles.buttonIcon} />
-          <span>PPT 다운로드</span>
-        </button>
-      </div>
     </div>
   );
 };
