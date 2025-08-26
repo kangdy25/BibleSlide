@@ -1,18 +1,15 @@
-import { Dispatch, SetStateAction } from 'react';
 import styles from './SearchInput.module.css';
+import useUserSettings from '../contexts/useUserSettings';
 
-export interface SearchInputProps {
-  verseInput: string;
-  setVerseInput: Dispatch<SetStateAction<string>>;
-}
+const SearchInput = () => {
+  const { settings, setSettings } = useUserSettings();
 
-const SearchInput = ({ verseInput, setVerseInput }: SearchInputProps) => {
   return (
     <div className={styles.inputGroup}>
       <input
         className={styles.input}
-        value={verseInput}
-        onChange={(e) => setVerseInput(e.target.value)}
+        value={settings.verseInput}
+        onChange={(e) => setSettings((prev) => ({ ...prev, verseInput: e.target.value }))}
         placeholder="창1:1-3"
       />
     </div>
