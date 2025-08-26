@@ -1,17 +1,11 @@
 import styles from './Sidebar.module.css';
-import { Dispatch, SetStateAction, version } from 'react';
 import SearchInput from '../components/SearchInput';
 import TextSlider from '../components/TextSlider';
 import SelectFont from '../components/SelectFont';
 import useUserSettings from '../contexts/useUserSettings';
 
-export interface SidebarProps {
-  font: string;
-  setFont: Dispatch<SetStateAction<string>>;
-}
-
-const Sidebar = ({ font, setFont }: SidebarProps) => {
-  const { settings, setSettings } = useUserSettings();
+const Sidebar = () => {
+  const { settings } = useUserSettings();
 
   const handleGeneratePpt = async () => {
     // verseInput이 비어있으면 함수를 종료합니다.
@@ -19,7 +13,6 @@ const Sidebar = ({ font, setFont }: SidebarProps) => {
       alert('성경 구절을 입력해주세요.');
       return;
     }
-    console.log(settings.verseInput);
 
     // IPC 통신을 통해 메인 프로세스로 데이터 전송
     const data = {
@@ -49,14 +42,9 @@ const Sidebar = ({ font, setFont }: SidebarProps) => {
   return (
     <div className={styles.sidebar}>
       <div className={styles.sidebarContent}>
-        {/* PPT로 제작할 성경을 입력 받을 Input */}
         <SearchInput />
-
-        {/* 글자 옵션을 정하는 Slider */}
         <TextSlider />
-
-        {/* 폰트를 지정할 드롭다운 */}
-        <SelectFont font={font} setFont={setFont} />
+        <SelectFont />
 
         {/* PPT 제작 버튼 */}
         <div className={styles.exportSection}>
