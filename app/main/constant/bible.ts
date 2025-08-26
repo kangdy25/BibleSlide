@@ -1,3 +1,7 @@
+export type BibleVersion = '개역개정' | '개역한글' | '새번역' | 'KJV' | 'NIV';
+
+export const BIBLE_VERSIONS: BibleVersion[] = ['개역개정', '개역한글', '새번역', 'KJV', 'NIV'];
+
 export type BibleBook = {
   short: string;
   full: string;
@@ -58,20 +62,8 @@ export const BIBLE_BOOKS: BibleBook[] = [
   { short: '엡', full: '에베소서', engShort: 'Eph', engFull: 'Ephesians', number: 49 },
   { short: '빌', full: '빌립보서', engShort: 'Php', engFull: 'Philippians', number: 50 },
   { short: '골', full: '골로새서', engShort: 'Col', engFull: 'Colossians', number: 51 },
-  {
-    short: '살전',
-    full: '데살로니가전서',
-    engShort: '1Th',
-    engFull: '1Thessalonians',
-    number: 52,
-  },
-  {
-    short: '살후',
-    full: '데살로니가후서',
-    engShort: '2Th',
-    engFull: '2 Thessalonians',
-    number: 53,
-  },
+  { short: '살전', full: '데살로니가전서', engShort: '1Th', engFull: '1Thessalonians', number: 52 },
+  { short: '살후', full: '데살로니가후서', engShort: '2Th', engFull: '2 Thessalonians', number: 53 },
   { short: '딤전', full: '디모데전서', engShort: '1Tim', engFull: '1Timothy', number: 54 },
   { short: '딤후', full: '디모데후서', engShort: '2Tim', engFull: '2 Timothy', number: 55 },
   { short: '딛', full: '디도서', engShort: 'Tit', engFull: 'Titus', number: 56 },

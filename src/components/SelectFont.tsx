@@ -1,18 +1,18 @@
 import styles from './SelectFont.module.css';
 import * as Select from '@radix-ui/react-select';
 import { ChevronDown, Check } from 'lucide-react';
-import { Dispatch, SetStateAction } from 'react';
+import useUserSettings from '../contexts/useUserSettings';
 
-export interface SelectFontProps {
-  font: string;
-  setFont: Dispatch<SetStateAction<string>>;
-}
+const SelectFont = () => {
+  const { settings, setSettings } = useUserSettings();
 
-const SelectFont = ({ font, setFont }: SelectFontProps) => {
   return (
     <div className={styles.section}>
       <label className={styles.sectionLabel}>폰트</label>
-      <Select.Root value={font} onValueChange={setFont}>
+      <Select.Root
+        value={settings.font}
+        onValueChange={(value) => setSettings((prev) => ({ ...prev, font: value }))}
+      >
         <Select.Trigger className={styles.selectTrigger}>
           <Select.Value />
           <Select.Icon className={styles.selectIcon}>
