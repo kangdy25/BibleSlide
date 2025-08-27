@@ -49,10 +49,10 @@ ipcMain.handle('fetch-verse', (event, input: string, version: string = 'GAE') =>
   }
 });
 
-ipcMain.handle('generate-slide', async (event, data: { input: string; version?: string }) => {
+ipcMain.handle('generate-slide', async (event, data: { input: string; bibleVersion: string }) => {
   try {
-    const { input, version = 'GAE' } = data;
-    const verses = fetchVerses(input, version);
+    const { input, bibleVersion } = data;
+    const verses = fetchVerses(input, bibleVersion);
 
     let pptx: any; // pptx 객체는 generatePPT에서 관리
     verses.forEach((verse, idx) => {
