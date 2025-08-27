@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import useUserSettings from '../contexts/useUserSettings';
 
 const usePPTGenerator = () => {
@@ -15,6 +15,7 @@ const usePPTGenerator = () => {
 
     const data = {
       input: settings.verseInput,
+      bibleVersion: settings.bibleVersion,
       font: settings.font,
       textSize: settings.textSize,
       letterSpacing: settings.letterSpacing,
