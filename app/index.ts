@@ -1,5 +1,6 @@
 import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 import path from 'path';
+import PptxGenJS from 'pptxgenjs';
 import { fileURLToPath } from 'url';
 import { generatePPT } from './main/utils/generatePPT.ts';
 import { fetchVerses } from './main/utils/parseVerse.ts';
@@ -22,7 +23,6 @@ function createWindow() {
 
   if (isDev) {
     mainWindow.loadURL('http://localhost:5173');
-    // mainWindow.webContents.openDevTools();
   } else {
     mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
   }
@@ -49,20 +49,27 @@ ipcMain.handle('fetch-verse', (event, input: string, version: string = 'GAE') =>
   }
 });
 
-ipcMain.handle('generate-slide', async (event, data: { input: string; version?: string }) => {
+ipcMain.handle('generate-slide', async (event, data: { input: string; bibleVersion: string }) => {
   try {
-    const { input, version = 'GAE' } = data;
-    const verses = fetchVerses(input, version);
+    const { input, bibleVersion } = data;
+    const verses = fetchVerses(input, bibleVersion);
 
-    let pptx: any; // pptx 객체는 generatePPT에서 관리
+    let pptx: PptxGenJS;
+
     verses.forEach((verse, idx) => {
-      console.log(verse);
       const title = `${verse.split(':')[1]} ${verse.split(':')[3]}장 ${verse.split(':')[4]}절`;
       const subTitle = `${verse.split(':')[1]} ${verse.split(':')[3]}장`;
-      const engTitle = `${verse.split(':')[2]} ${idx + 1}`;
-      const engSubTitle = `${verse.split(':')[2]} ${idx + 1}`;
+      const engTitle = `${verse.split(':')[2]} ${verse.split(':')[3]}:${verse.split(':')[4]}`;
+      const engSubTitle = `${verse.split(':')[2]} ${verse.split(':')[3]}`;
       const verseContent = `${verse.split(':')[5]}`;
-      pptx = generatePPT(title, subTitle, verseContent, pptx); // pptx가 undefined이면 새로 생성, 있으면 슬라이드 추가
+
+      if (bibleVersion === 'KJV' || bibleVersion === 'NIV') {
+        // 영어 버전인 경우, 제목과 소제목을 영어로 구성
+        pptx = generatePPT(engTitle, engSubTitle, verseContent, pptx);
+      } else {
+        // pptx가 undefined이면 새로 생성, 있으면 슬라이드 추가
+        pptx = generatePPT(title, subTitle, verseContent, pptx);
+      }
     });
 
     // 파일 저장 다이얼로그
@@ -75,7 +82,7 @@ ipcMain.handle('generate-slide', async (event, data: { input: string; version?: 
     });
 
     if (filePath) {
-      await pptx.writeFile({ fileName: filePath });
+      await pptx!.writeFile({ fileName: filePath });
       return { success: true, message: `File saved to ${filePath}` };
     }
 
