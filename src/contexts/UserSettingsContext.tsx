@@ -5,6 +5,7 @@ interface UserSettings {
   bibleVersion: BibleVersion;
   verseInput: string;
   font: string;
+  isBold: '가늘게' | '굵게';
   textSize: number;
   letterSpacing: number;
   lineHeight: number;
@@ -27,6 +28,7 @@ export const UserSettingsProvider = ({ children }: UserSettingsProviderProps) =>
     bibleVersion: '개역개정',
     verseInput: '',
     font: 'Pretendard',
+    isBold: '가늘게',
     textSize: 28,
     letterSpacing: 0,
     lineHeight: 1.25,

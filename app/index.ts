@@ -12,7 +12,7 @@ let mainWindow: BrowserWindow | null;
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1020,
-    height: 640,
+    height: 700,
     resizable: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -57,14 +57,22 @@ ipcMain.handle(
       input: string;
       bibleVersion: string;
       font: string;
+      isBold: '가늘게' | '굵게';
       textSize: number;
       letterSpacing: number;
       lineHeight: number;
     }
   ) => {
     try {
-      const { input, bibleVersion, font, textSize, letterSpacing, lineHeight } = data;
+      const { input, bibleVersion, font, isBold, textSize, letterSpacing, lineHeight } = data;
       const verses = fetchVerses(input, bibleVersion);
+
+      let fontWeight;
+      if (isBold === '가늘게') {
+        fontWeight = false;
+      } else {
+        fontWeight = true;
+      }
 
       let pptx: PptxGenJS;
 
@@ -82,6 +90,7 @@ ipcMain.handle(
             engSubTitle,
             verseContent,
             font,
+            fontWeight,
             textSize,
             letterSpacing,
             lineHeight,
@@ -89,7 +98,17 @@ ipcMain.handle(
           );
         } else {
           // pptx가 undefined이면 새로 생성, 있으면 슬라이드 추가
-          pptx = generatePPT(title, subTitle, verseContent, font, textSize, letterSpacing, lineHeight, pptx);
+          pptx = generatePPT(
+            title,
+            subTitle,
+            verseContent,
+            font,
+            fontWeight,
+            textSize,
+            letterSpacing,
+            lineHeight,
+            pptx
+          );
         }
       });
 

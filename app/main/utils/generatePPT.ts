@@ -13,6 +13,7 @@ export function generatePPT(
   subTitle: string,
   content: string,
   font: string,
+  fontWeight: boolean,
   textSize: number,
   letterSpacing: number,
   lineHeight: number,
@@ -59,7 +60,7 @@ export function generatePPT(
     charSpacing: letterSpacing,
     lineSpacingMultiple: lineHeight,
     color: 'FFFFFF',
-    bold: true,
+    bold: fontWeight,
     valign: 'top',
   });
 
