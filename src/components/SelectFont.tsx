@@ -26,12 +26,10 @@ const SelectFont = () => {
               <Select.Viewport className={styles.selectViewport}>
                 {[
                   'Pretendard',
-                  'KoPubWorld돋움체_Pro',
-                  'KoPubWorld바탕체_Pro',
-                  '카페24 단정해 OTF',
-                  '카페24 당당해 OTF',
+                  'KoPubWorld돋움체_Pro Medium',
+                  'KoPubWorld바탕체_Pro Medium',
+                  '나눔바른고딕',
                   '나눔명조',
-                  '배찌체',
                   '나눔손글씨 펜',
                 ].map((fontOption) => (
                   <Select.Item key={fontOption} className={styles.selectItem} value={fontOption}>

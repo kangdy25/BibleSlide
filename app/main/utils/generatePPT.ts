@@ -43,6 +43,7 @@ export function generatePPT(
     w: '100%',
     h: 1,
     align: 'center',
+    fontFace: 'Pretendard',
     fontSize: 20,
     bold: true,
     color: 'FFFFFF',
@@ -72,6 +73,7 @@ export function generatePPT(
     w: '100%',
     h: 1,
     align: 'center',
+    fontFace: 'Pretendard',
     fontSize: 16,
     color: 'FFFFFF',
   });
