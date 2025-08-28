@@ -27,9 +27,9 @@ export const UserSettingsProvider = ({ children }: UserSettingsProviderProps) =>
     bibleVersion: '개역개정',
     verseInput: '',
     font: 'Pretendard',
-    textSize: 24,
+    textSize: 28,
     letterSpacing: 0,
-    lineHeight: 1.75,
+    lineHeight: 1.25,
     isDarkMode: true,
   });
 

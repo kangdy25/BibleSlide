@@ -14,7 +14,7 @@ const Content = () => {
           style={{
             fontSize: `${settings.textSize}px`,
             letterSpacing: `${settings.letterSpacing}px`,
-            lineHeight: `${settings.lineHeight}`,
+            lineHeight: `${settings.lineHeight + 0.3}`,
             fontFamily: `${settings.font}`,
           }}
         >
