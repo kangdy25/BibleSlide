@@ -9,8 +9,8 @@ const Sidebar = () => {
     <div className={styles.sidebar}>
       <div className={styles.sidebarContent}>
         <SearchInput />
-        <TextSlider />
         <SelectFont />
+        <TextSlider />
         <GeneratePPTButton />
       </div>
     </div>

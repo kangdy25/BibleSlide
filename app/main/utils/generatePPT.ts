@@ -12,6 +12,11 @@ export function generatePPT(
   title: string,
   subTitle: string,
   content: string,
+  font: string,
+  fontWeight: boolean,
+  textSize: number,
+  letterSpacing: number,
+  lineHeight: number,
   pptx?: PptxGenJS
 ): PptxGenJS {
   // 없으면 새 PPTX 객체 생성
@@ -38,7 +43,8 @@ export function generatePPT(
     w: '100%',
     h: 1,
     align: 'center',
-    fontSize: 24,
+    fontSize: 20,
+    bold: true,
     color: 'FFFFFF',
   });
 
@@ -49,9 +55,12 @@ export function generatePPT(
     w: '85%',
     h: '70%',
     align: 'left',
-    fontSize: 22,
+    fontFace: font,
+    fontSize: textSize,
+    charSpacing: letterSpacing,
+    lineSpacingMultiple: lineHeight,
     color: 'FFFFFF',
-    bold: true,
+    bold: fontWeight,
     valign: 'top',
   });
 
