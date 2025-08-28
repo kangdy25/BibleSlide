@@ -9,7 +9,6 @@ interface UserSettings {
   textSize: number;
   letterSpacing: number;
   lineHeight: number;
-  isDarkMode: boolean;
 }
 
 interface UserSettingsContextType {
@@ -32,7 +31,6 @@ export const UserSettingsProvider = ({ children }: UserSettingsProviderProps) =>
     textSize: 28,
     letterSpacing: 0,
     lineHeight: 1.25,
-    isDarkMode: true,
   });
 
   const value = useMemo(() => ({ settings, setSettings }), [settings]);

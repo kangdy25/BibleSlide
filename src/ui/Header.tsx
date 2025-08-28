@@ -1,7 +1,5 @@
 import styles from './Header.module.css';
 import * as ToggleGroup from '@radix-ui/react-toggle-group';
-import * as Switch from '@radix-ui/react-switch';
-import { Moon, Sun } from 'lucide-react';
 import useUserSettings from '../contexts/useUserSettings';
 import { BIBLE_VERSIONS, BibleVersion } from '../../app/main/constant/bible';
 
@@ -31,23 +29,6 @@ const Header = () => {
               </ToggleGroup.Item>
             ))}
           </ToggleGroup.Root>
-
-          <div className={styles.switchContainer}>
-            <Switch.Root
-              className={styles.switchRoot}
-              checked={settings.isDarkMode}
-              onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, isDarkMode: checked }))}
-              aria-label="다크 모드 전환"
-            >
-              <Switch.Thumb className={styles.switchThumb}>
-                {settings.isDarkMode ? (
-                  <Sun className={styles.switchIcon} />
-                ) : (
-                  <Moon className={styles.switchIcon} />
-                )}
-              </Switch.Thumb>
-            </Switch.Root>
-          </div>
         </div>
       </div>
     </header>
