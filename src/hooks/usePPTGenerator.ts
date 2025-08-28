@@ -17,6 +17,7 @@ const usePPTGenerator = () => {
       input: settings.verseInput,
       bibleVersion: settings.bibleVersion,
       font: settings.font,
+      isBold: settings.isBold,
       textSize: settings.textSize,
       letterSpacing: settings.letterSpacing,
       lineHeight: settings.lineHeight,
