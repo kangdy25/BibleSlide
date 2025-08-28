@@ -1,12 +1,9 @@
 import styles from './Content.module.css';
 import useUserSettings from '../contexts/useUserSettings';
+import { mockVerse } from '../../app/main/constant/mockVerse';
 
 const Content = () => {
-  const { settings, setSettings } = useUserSettings();
-  const verseText = `태초에 하나님이 천지를 창조하시니라
-땅이 혼돈하고 공허하며 흑암이 깊음 위에 있고
-하나님의 영은 수면 위에 운행하시니라
-하나님이 이르시되 빛이 있으라 하시니 빛이 있었고`;
+  const { settings } = useUserSettings();
 
   return (
     <div className={styles.previewArea}>
@@ -21,7 +18,7 @@ const Content = () => {
             fontFamily: `${settings.font}`,
           }}
         >
-          <p className={styles.verseLine}>{verseText}</p>
+          <p className={styles.verseLine}>{mockVerse[settings.bibleVersion]}</p>
         </div>
       </div>
     </div>
