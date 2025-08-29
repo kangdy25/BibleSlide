@@ -39,16 +39,18 @@ app.whenReady().then(() => {
 // -------------------------
 // IPC 핸들러: 성경 구절 가져오기
 // -------------------------
-
 ipcMain.handle('fetch-verse', (event, input: string, version: string = 'GAE') => {
   try {
     const verses = fetchVerses(input, version);
-    return verses; // 배열 반환
-  } catch (err: any) {
-    return [`Error: ${err.message}`];
+    return verses;
+  } catch (err: unknown) {
+    return [`Error: ${(err as Error).message}`];
   }
 });
 
+// -------------------------
+// IPC 핸들러: PPT 생성하기
+// -------------------------
 ipcMain.handle(
   'generate-slide',
   async (
@@ -123,18 +125,12 @@ ipcMain.handle(
 
       if (filePath) {
         await pptx!.writeFile({ fileName: filePath });
-        return { success: true, message: `File saved to ${filePath}` };
+        return { success: true, message: `파일이 ${filePath}에 저장되었습니다.` };
       }
 
-      return { success: false, message: 'File save cancelled' };
+      return { success: false, message: '파일 저장이 취소되었습니다.' };
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        console.error('Error generating slide:', err.message);
-        return { success: false, message: `Error: ${err.message}` };
-      } else {
-        console.error('Unexpected error:', err);
-        return { success: false, message: 'Unexpected error occurred' };
-      }
+      return `PPT 슬라이드 생성 오류:  ${(err as Error).message}`;
     }
   }
 );
