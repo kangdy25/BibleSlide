@@ -9,6 +9,7 @@ const SelectFont = () => {
   console.log(settings.isBold);
   return (
     <>
+      {/* Font 종류 선택 */}
       <div className={styles.section}>
         <label className={styles.sectionLabel}>폰트</label>
         <Select.Root
@@ -44,6 +45,8 @@ const SelectFont = () => {
           </Select.Portal>
         </Select.Root>
       </div>
+
+      {/* Font 굵기 선택 */}
       <div className={styles.section}>
         <RadioGroup.Root
           className={styles.radioGroup}
