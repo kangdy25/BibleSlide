@@ -19,13 +19,16 @@ function createWindow() {
     },
   });
 
-  if (app.isPackaged) {
-    // 프로덕션 환경: 빌드된 renderer의 index.html 파일을 로드
-    mainWindow.loadFile(join(__dirname, '../renderer/index.html'));
-    // mainWindow.webContents.openDevTools({ mode: 'detach' });
+  const devServerUrl = process.env.VITE_DEV_SERVER_URL;
+
+  // Vite 개발 서버 URL이 있으면 개발 환경으로 간주
+  if (devServerUrl) {
+    mainWindow.loadURL(devServerUrl);
+    // 개발자 도구를 열어 디버깅을 쉽게 할 수 있습니다.
+    mainWindow.webContents.openDevTools({ mode: 'detach' });
   } else {
-    // 개발 환경: electron-vite가 제공하는 개발 서버 URL을 로드
-    mainWindow.loadURL(process.env['VITE_DEV_SERVER_URL'] as string);
+    // URL이 없으면 프로덕션 환경으로 간주하고 빌드된 파일을 로드
+    mainWindow.loadFile(join(__dirname, '../renderer/index.html'));
   }
 }
 

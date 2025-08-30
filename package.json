@@ -1,12 +1,12 @@
 {
   "name": "bibleslide",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "성경 구절 PPT 생성기 (\"Bible\" Verse to PPT \"Slide\")",
   "main": "out/main/index.js",
   "type": "module",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development concurrently \"tsc --watch src/preload/index.ts\" \"vite\" \"wait-on http://localhost:5173 && electron .\"",
-    "start": "electron .",
+    "dev": "electron-vite dev",
+    "start": "electron out/main/index.js",
     "build": "electron-vite build && electron-builder",
     "dist": "electron-builder",
     "test": "echo \"Error: no test specified\" && exit 1"
