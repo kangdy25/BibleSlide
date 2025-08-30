@@ -2,12 +2,12 @@
   "name": "bibleslide",
   "version": "1.0.0",
   "description": "성경 구절 PPT 생성기 (\"Bible\" Verse to PPT \"Slide\")",
-  "main": "app/index.ts",
+  "main": "out/main/index.js",
   "type": "module",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development concurrently \"tsc --watch app/preload.ts\" \"vite\" \"wait-on http://localhost:5173 && electron .\"",
+    "dev": "cross-env NODE_ENV=development concurrently \"tsc --watch src/preload/index.ts\" \"vite\" \"wait-on http://localhost:5173 && electron .\"",
     "start": "electron .",
-    "build": "vite build && electron-builder",
+    "build": "electron-vite build && electron-builder",
     "dist": "electron-builder",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -38,6 +38,7 @@
     "cross-env": "^7.0.3",
     "electron": "^37.2.6",
     "electron-builder": "^24.0.0",
+    "electron-vite": "^4.0.0",
     "globals": "^16.3.0",
     "prettier": "^3.6.2",
     "ts-node": "^10.9.2",
@@ -48,10 +49,7 @@
   "build": {
     "appId": "com.kangdy25.bibleslide",
     "files": [
-      "dist/**/*",
-      "src/**",
-      "node_modules/**/*",
-      "package.json"
+      "out/**/*"
     ],
     "win": {
       "target": "nsis"

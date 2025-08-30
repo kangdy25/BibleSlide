@@ -1,6 +1,6 @@
 import styles from './Content.module.css';
 import useUserSettings from '../contexts/useUserSettings';
-import { mockVerse } from '../../app/main/constant/mockVerse';
+import { mockVerse } from '../../main/constant/mockVerse';
 
 const Content = () => {
   const { settings } = useUserSettings();

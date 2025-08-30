@@ -1,4 +1,4 @@
-import bibleData from '../../../data/bible.json' with { type: 'json' };
+import bibleData from '../../data/bible.json' with { type: 'json' };
 import { BIBLE_BOOKS } from '../constant/bible.ts';
 
 type BibleData = Record<string, Record<string, Record<string, Record<number, string>>>>;

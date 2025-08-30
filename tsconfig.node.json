@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "moduleResolution": "nodenext",
+    "module": "nodenext"
+  },
+  "include": ["electron.vite.config.ts", "src/main/index.ts", "src/preload/index.ts"]
+}

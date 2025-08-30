@@ -1,11 +1,8 @@
 import { app, BrowserWindow, dialog, ipcMain } from 'electron';
-import path from 'path';
+import path, { join } from 'path';
 import PptxGenJS from 'pptxgenjs';
-import { fileURLToPath } from 'url';
-import { generatePPT } from './main/utils/generatePPT.ts';
-import { fetchVerses } from './main/utils/parseVerse.ts';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+import { generatePPT } from './utils/generatePPT.ts';
+import { fetchVerses } from './utils/parseVerse.ts';
 
 let mainWindow: BrowserWindow | null;
 
@@ -15,16 +12,18 @@ function createWindow() {
     height: 700,
     resizable: false,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, '../preload/index.cjs'),
+      sandbox: false, // contextBridge를 사용하려면 sandbox는 false여야 합니다.
     },
   });
 
-  const isDev = process.env.NODE_ENV === 'development';
-
-  if (isDev) {
-    mainWindow.loadURL('http://localhost:5173');
+  if (app.isPackaged) {
+    // 프로덕션 환경: 빌드된 renderer의 index.html 파일을 로드
+    mainWindow.loadFile(join(__dirname, '../renderer/index.html'));
+    mainWindow.webContents.openDevTools({ mode: 'detach' });
   } else {
-    mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
+    // 개발 환경: electron-vite가 제공하는 개발 서버 URL을 로드
+    mainWindow.loadURL(process.env['VITE_DEV_SERVER_URL'] as string);
   }
 }
 

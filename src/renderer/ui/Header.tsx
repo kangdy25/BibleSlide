@@ -1,7 +1,7 @@
 import styles from './Header.module.css';
 import * as ToggleGroup from '@radix-ui/react-toggle-group';
 import useUserSettings from '../contexts/useUserSettings';
-import { BIBLE_VERSIONS, BibleVersion } from '../../app/main/constant/bible';
+import { BIBLE_VERSIONS, BibleVersion } from '../../main/constant/bible';
 
 const Header = () => {
   const { settings, setSettings } = useUserSettings();
@@ -10,7 +10,7 @@ const Header = () => {
     <header className={styles.header}>
       <div className={styles.headerContent}>
         <div className={styles.headerLeft}>
-          <img className={styles.logo} src="/logo.png" />
+          <img className={styles.logo} src="./logo.png" alt="앱 로고" />
         </div>
 
         <div className={styles.headerRight}>

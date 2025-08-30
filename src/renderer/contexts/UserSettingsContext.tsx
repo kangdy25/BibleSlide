@@ -1,5 +1,5 @@
 import React, { createContext, useState, ReactNode, useMemo } from 'react';
-import { BibleVersion } from '../../app/main/constant/bible';
+import { BibleVersion } from '../../main/constant/bible';
 
 interface UserSettings {
   bibleVersion: BibleVersion;
