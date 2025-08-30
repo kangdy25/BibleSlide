@@ -6,7 +6,7 @@ import * as RadioGroup from '@radix-ui/react-radio-group';
 
 const SelectFont = () => {
   const { settings, setSettings } = useUserSettings();
-  console.log(settings.isBold);
+
   return (
     <>
       {/* Font 종류 선택 */}
