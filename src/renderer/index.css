@@ -1,0 +1,20 @@
+:root {
+  --font-pretendard: 'Pretendard', sans-serif;
+  --background: oklch(0.1 0 0);
+  --foreground: oklch(0.98 0 0);
+  --border: oklch(0.98 0 0 / 0.2);
+}
+
+* {
+  border-color: var(--border);
+  outline-color: oklch(0.98 0 0 / 0.3);
+}
+
+body {
+  font-family: var(--font-pretendard), var(--font-sans), sans-serif;
+  color: var(--foreground);
+  background-color: var(--background);
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
