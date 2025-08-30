@@ -9,8 +9,9 @@ let mainWindow: BrowserWindow | null;
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1020,
-    height: 700,
+    height: 720,
     resizable: false,
+    icon: join(__dirname, '../../build/icon.png'),
     webPreferences: {
       preload: path.join(__dirname, '../preload/index.cjs'),
       sandbox: false, // contextBridge를 사용하려면 sandbox는 false여야 합니다.
@@ -20,7 +21,7 @@ function createWindow() {
   if (app.isPackaged) {
     // 프로덕션 환경: 빌드된 renderer의 index.html 파일을 로드
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'));
-    mainWindow.webContents.openDevTools({ mode: 'detach' });
+    // mainWindow.webContents.openDevTools({ mode: 'detach' });
   } else {
     // 개발 환경: electron-vite가 제공하는 개발 서버 URL을 로드
     mainWindow.loadURL(process.env['VITE_DEV_SERVER_URL'] as string);
