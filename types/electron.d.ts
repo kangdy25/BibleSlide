@@ -1,6 +1,6 @@
 export interface SlideDataType {
   input: string;
-  version: string;
+  bibleVersion: string;
   font: string;
   textSize: number;
   isBold: '가늘게' | '굵게';

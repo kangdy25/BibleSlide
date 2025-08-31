@@ -45,9 +45,9 @@ app.whenReady().then(() => {
 // -------------------------
 // IPC 핸들러: 성경 구절 가져오기
 // -------------------------
-ipcMain.handle('fetch-verse', (event, input: string, version: string = 'GAE') => {
+ipcMain.handle('fetch-verse', (event, input: string, bibleVersion: string = 'GAE') => {
   try {
-    const verses = fetchVerses(input, version);
+    const verses = fetchVerses(input, bibleVersion);
     return verses;
   } catch (err: unknown) {
     return [`Error: ${(err as Error).message}`];

@@ -26,17 +26,17 @@ export function generatePPT(
     y: 0,
     w: '100%',
     h: '100%',
-    fill: { color: '000000', transparency: 60 },
+    fill: { color: '000000', transparency: 50 },
   });
 
   // 상단 제목 추가
   slide.addText(title, {
     x: 0,
-    y: 0,
+    y: 0.2,
     w: '100%',
-    h: 1,
+    h: 0.5,
     align: 'center',
-    fontFace: 'Pretendard',
+    fontFace: '나눔바른고딕',
     fontSize: 20,
     bold: true,
     color: 'FFFFFF',
@@ -45,9 +45,9 @@ export function generatePPT(
   // 중앙 본문 내용 추가
   slide.addText(content, {
     x: '7.5%',
-    y: '22.5%',
-    w: '85%',
-    h: '70%',
+    y: '17.5%',
+    w: '87.5%',
+    h: '75%',
     align: 'left',
     fontFace: font,
     fontSize: textSize,
@@ -62,11 +62,11 @@ export function generatePPT(
   const sourceText = subTitle;
   slide.addText(sourceText, {
     x: 0,
-    y: '85%',
+    y: '90%',
     w: '100%',
-    h: 1,
+    h: 0.5,
     align: 'center',
-    fontFace: 'Pretendard',
+    fontFace: '나눔바른고딕',
     fontSize: 16,
     color: 'FFFFFF',
   });
@@ -74,8 +74,8 @@ export function generatePPT(
   // L자 모양 테두리 추가
   const cornerLineStyle = { shape: pptx.ShapeType.line, line: { color: 'FFFFFF', width: 5 } };
   // 좌측 상단
-  slide.addShape(pptx.ShapeType.line, { x: 0.465, y: 1, w: 0.75, h: 0, ...cornerLineStyle });
-  slide.addShape(pptx.ShapeType.line, { x: 0.5, y: 1, w: 0, h: 0.5, ...cornerLineStyle });
+  slide.addShape(pptx.ShapeType.line, { x: 0.465, y: 0.75, w: 0.75, h: 0, ...cornerLineStyle });
+  slide.addShape(pptx.ShapeType.line, { x: 0.5, y: 0.75, w: 0, h: 0.5, ...cornerLineStyle });
   // 우측 하단
   slide.addShape(pptx.ShapeType.line, { x: 8.785, y: 5, w: 0.75, h: 0, ...cornerLineStyle });
   slide.addShape(pptx.ShapeType.line, { x: 9.5, y: 4.5, w: 0, h: 0.5, ...cornerLineStyle });

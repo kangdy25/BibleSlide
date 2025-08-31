@@ -14,7 +14,7 @@ const TextSlider = () => {
         onValueChange={(value) => setSettings((prev) => ({ ...prev, textSize: value[0] }))}
         max={48}
         min={12}
-        step={2}
+        step={1}
       >
         <Slider.Track className={styles.sliderTrack}>
           <Slider.Range className={styles.sliderRange} />

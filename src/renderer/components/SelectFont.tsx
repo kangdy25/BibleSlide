@@ -27,8 +27,8 @@ const SelectFont = () => {
               <Select.Viewport className={styles.selectViewport}>
                 {[
                   'Pretendard',
-                  'KoPubWorld돋움체_Pro Medium',
-                  'KoPubWorld바탕체_Pro Medium',
+                  'KoPubWorld돋움체 Medium',
+                  'KoPubWorld바탕체 Medium',
                   '나눔바른고딕',
                   '나눔명조',
                   '나눔손글씨 펜',
@@ -50,7 +50,7 @@ const SelectFont = () => {
       <div className={styles.section}>
         <RadioGroup.Root
           className={styles.radioGroup}
-          defaultValue="가늘게"
+          defaultValue={settings.isBold}
           onValueChange={(value: '가늘게' | '굵게') => setSettings((prev) => ({ ...prev, isBold: value }))}
         >
           <div className={styles.radioItem}>

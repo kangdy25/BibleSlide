@@ -26,9 +26,9 @@ export const UserSettingsProvider = ({ children }: UserSettingsProviderProps) =>
   const [settings, setSettings] = useState<UserSettings>({
     bibleVersion: '개역개정',
     verseInput: '',
-    font: 'Pretendard',
-    isBold: '가늘게',
-    textSize: 28,
+    font: '나눔명조',
+    isBold: '굵게',
+    textSize: 30,
     letterSpacing: 0,
     lineHeight: 1.25,
   });
