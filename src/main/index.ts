@@ -19,7 +19,7 @@ function createWindow() {
     },
   });
 
-  const devServerUrl = process.env.VITE_DEV_SERVER_URL;
+  const devServerUrl = process.env.ELECTRON_RENDERER_URL;
 
   // Vite 개발 서버 URL이 있으면 개발 환경으로 간주
   if (devServerUrl) {
