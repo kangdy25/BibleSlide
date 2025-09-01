@@ -1,6 +1,7 @@
 # 📖 BibleSlide
 
 성경 구절을 입력하면 자동으로 PPT 슬라이드를 생성해주는 데스크탑 애플리케이션입니다.
+<video src="https://github.com/user-attachments/assets/7eb302c5-2de4-402b-ba0a-da6377b5656c" muted autoplay loop playsinline></video>
 
 ## ✨ 프로젝트 개요 및 동기
 
@@ -19,8 +20,9 @@
 [다운로드 링크 바로가기](https://github.com/kangdy25/BibleSlide/releases) 또는 우측의 **'Release'**에서 최신 버전 설치 파일을 다운로드하여 설치할 수 있습니다.
 
 💾 설치 파일
-**Windows**: BibleSlide-Setup-1.1.1.exe 파일을 다운로드하여 설치해주세요.
-**MacOS**: BibleSlide-1.1.1.dmg 파일을 다운로드하여 설치해주세요.
+
+- **Windows**: BibleSlide-Setup-1.1.1.exe 파일을 다운로드하여 설치해주세요.
+- **MacOS**: BibleSlide-1.1.1.dmg 파일을 다운로드하여 설치해주세요.
 
 ## 💡 사용 방법
 
