@@ -1,5 +1,10 @@
 .section {
   display: flex;
+}
+
+.fontSelect {
+  display: flex;
+  flex: 1;
   flex-direction: column;
   gap: 0.75rem;
 }
@@ -96,6 +101,8 @@
 
 .radioGroup {
   display: flex;
+  flex-direction: column;
+  padding: 25px 0 0 15px;
   gap: 0.75rem;
 }
 

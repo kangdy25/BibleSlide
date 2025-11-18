@@ -64,6 +64,7 @@ ipcMain.handle(
     data: {
       input: string;
       bibleVersion: string;
+      align: 'left' | 'center' | 'right';
       font: string;
       isBold: '가늘게' | '굵게';
       textSize: number;
@@ -72,7 +73,7 @@ ipcMain.handle(
     }
   ) => {
     try {
-      const { input, bibleVersion, font, isBold, textSize, letterSpacing, lineHeight } = data;
+      const { input, bibleVersion, align, font, isBold, textSize, letterSpacing, lineHeight } = data;
       const verses = fetchVerses(input, bibleVersion);
 
       let fontWeight;
@@ -97,6 +98,7 @@ ipcMain.handle(
             engTitle,
             engSubTitle,
             verseContent,
+            align,
             font,
             fontWeight,
             textSize,
@@ -110,6 +112,7 @@ ipcMain.handle(
             title,
             subTitle,
             verseContent,
+            align,
             font,
             fontWeight,
             textSize,

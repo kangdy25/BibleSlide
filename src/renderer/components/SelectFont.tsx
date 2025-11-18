@@ -8,10 +8,10 @@ const SelectFont = () => {
   const { settings, setSettings } = useUserSettings();
 
   return (
-    <>
+    <div className={styles.section}>
       {/* Font 종류 선택 */}
-      <div className={styles.section}>
-        <label className={styles.sectionLabel}>폰트</label>
+      <div className={styles.fontSelect}>
+        <label className={styles.sectionLabel}>폰트 설정</label>
         <Select.Root
           value={settings.font}
           onValueChange={(value) => setSettings((prev) => ({ ...prev, font: value }))}
@@ -47,7 +47,7 @@ const SelectFont = () => {
       </div>
 
       {/* Font 굵기 선택 */}
-      <div className={styles.section}>
+      <div className={styles.boldSelect}>
         <RadioGroup.Root
           className={styles.radioGroup}
           defaultValue={settings.isBold}
@@ -71,7 +71,7 @@ const SelectFont = () => {
           </div>
         </RadioGroup.Root>
       </div>
-    </>
+    </div>
   );
 };
 

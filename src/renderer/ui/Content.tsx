@@ -17,6 +17,7 @@ const Content = () => {
             lineHeight: `${settings.lineHeight + 0.3}`,
             fontFamily: `${settings.font}`,
             fontWeight: `${settings.isBold === '굵게' ? 'bold' : 'normal'}`,
+            textAlign: `${settings.align}`,
           }}
         >
           <p className={styles.verseLine}>{mockVerse[settings.bibleVersion]}</p>
