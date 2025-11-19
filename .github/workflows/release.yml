@@ -1,0 +1,38 @@
+name: Build & Release
+
+# 'v'로 시작하는 태그가 푸시될 때만 실행 (예: v1.1.2)
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        # 윈도우와 맥 동시 빌드 (맥 빌드가 필요 없다면 macos-latest는 제거해도 됨)
+        os: [windows-latest, macos-latest]
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      # 맥OS인 경우에만 실행되는 단계 (선택사항)
+      # 현재 프로젝트 구조상 npm run build로 해결된다면 별도 스크립트 불필요
+
+      - name: Build and Publish
+        env:
+          # GitHub에서 자동으로 제공하는 토큰 사용 (별도 설정 불필요)
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run build -- --publish always
