@@ -6,17 +6,31 @@ import * as RadioGroup from '@radix-ui/react-radio-group';
 import useDeviceOS from '../hooks/useDeviceOS';
 
 // Kopub 폰트의 기본 이름
-const KOPUB_DOTUM = 'KoPubWorld돋움체';
-const KOPUB_BATANG = 'KoPubWorld바탕체';
+const KOPUB_DOTUM_BASE = 'KoPubWorld돋움체';
+const KOPUB_BATANG_BASE = 'KoPubWorld바탕체';
+
+// 모든 폰트 옵션 목록 (사용자에게 보여줄 기본 이름)
+const FONT_OPTIONS_BASE = [
+  'Pretendard',
+  KOPUB_DOTUM_BASE,
+  KOPUB_BATANG_BASE,
+  '나눔바른고딕',
+  '나눔명조',
+  '나눔손글씨 펜',
+];
 
 const SelectFont = () => {
   const { settings, setSettings } = useUserSettings();
   const os = useDeviceOS();
-
   const isWindows = os === 'Windows';
 
-  const kopubDotum = isWindows ? `${KOPUB_DOTUM} Medium` : KOPUB_DOTUM;
-  const kopubBatang = isWindows ? `${KOPUB_BATANG} Medium` : KOPUB_BATANG;
+  // Windows 운영체제인 경우, KoPub 폰트에는 Medium을 붙여주기
+  const getFontValue = (baseName: string): string => {
+    if (isWindows && (baseName === KOPUB_DOTUM_BASE || baseName === KOPUB_BATANG_BASE)) {
+      return `${baseName} Medium`;
+    }
+    return baseName;
+  };
 
   return (
     <div className={styles.section}>
@@ -24,11 +38,13 @@ const SelectFont = () => {
       <div className={styles.fontSelect}>
         <label className={styles.sectionLabel}>폰트 설정</label>
         <Select.Root
+          // value에는 settings.font (Medium이 포함될 수 있는 최종 이름)을 사용합니다.
           value={settings.font}
           onValueChange={(value) => setSettings((prev) => ({ ...prev, font: value }))}
         >
           <Select.Trigger className={styles.selectTrigger}>
-            <Select.Value />
+            {/* Windows 운영체제일 때, Context API에서 붙이는 KoPub 폰트명의 Medium을 제거하기 */}
+            <Select.Value>{settings.font.replace(' Medium', '')}</Select.Value>
             <Select.Icon className={styles.selectIcon}>
               <ChevronDown />
             </Select.Icon>
@@ -36,23 +52,25 @@ const SelectFont = () => {
           <Select.Portal>
             <Select.Content className={styles.selectContent}>
               <Select.Viewport className={styles.selectViewport}>
-                {['Pretendard', kopubDotum, kopubBatang, '나눔바른고딕', '나눔명조', '나눔손글씨 펜'].map(
-                  (fontOption) => (
-                    <Select.Item key={fontOption} className={styles.selectItem} value={fontOption}>
-                      <Select.ItemText>{fontOption}</Select.ItemText>
+                {FONT_OPTIONS_BASE.map((fontBaseName) => {
+                  const fontValue = getFontValue(fontBaseName);
+
+                  return (
+                    <Select.Item key={fontValue} className={styles.selectItem} value={fontValue}>
+                      <Select.ItemText>{fontBaseName}</Select.ItemText>
                       <Select.ItemIndicator className={styles.selectItemIndicator}>
                         <Check />
                       </Select.ItemIndicator>
                     </Select.Item>
-                  )
-                )}
+                  );
+                })}
               </Select.Viewport>
             </Select.Content>
           </Select.Portal>
         </Select.Root>
       </div>
 
-      {/* Font 굵기 선택 */}
+      {/* Font 굵기 선택  */}
       <div className={styles.boldSelect}>
         <RadioGroup.Root
           className={styles.radioGroup}

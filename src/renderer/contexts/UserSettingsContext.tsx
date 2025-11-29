@@ -1,4 +1,4 @@
-import React, { createContext, useState, ReactNode, useMemo } from 'react';
+import React, { createContext, useState, ReactNode, useMemo, useEffect } from 'react';
 import { BibleVersion } from '../../main/constant/bible';
 import useDeviceOS from '../hooks/useDeviceOS';
 
@@ -25,19 +25,28 @@ interface UserSettingsProviderProps {
 }
 
 export const UserSettingsProvider = ({ children }: UserSettingsProviderProps) => {
-  // useDeviceOS를 통해 운영체제에 따라 KoPubWorld바탕체명 조건부 렌더링
+  // 기본 폰트값이 될 KoPub바탕체 폰트 명을 운영체제에 따라 처리하기
   const KOPUB_BATANG = 'KoPubWorld바탕체';
   const os = useDeviceOS();
 
   const isWindows = os === 'Windows';
   const kopubBatang = isWindows ? `${KOPUB_BATANG} Medium` : KOPUB_BATANG;
 
+  useEffect(() => {
+    if (settings.font !== kopubBatang) {
+      setSettings((prevSettings) => ({
+        ...prevSettings,
+        font: kopubBatang,
+      }));
+    }
+  }, [kopubBatang]);
+
   const [settings, setSettings] = useState<UserSettings>({
     bibleVersion: '개역개정',
     verseInput: '',
     font: kopubBatang,
     align: 'left',
-    isBold: '굵게',
+    isBold: '가늘게',
     textSize: 30,
     letterSpacing: 0,
     lineHeight: 1.25,
