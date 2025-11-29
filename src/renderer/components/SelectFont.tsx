@@ -3,9 +3,20 @@ import * as Select from '@radix-ui/react-select';
 import { ChevronDown, Check } from 'lucide-react';
 import useUserSettings from '../contexts/useUserSettings';
 import * as RadioGroup from '@radix-ui/react-radio-group';
+import useDeviceOS from '../hooks/useDeviceOS';
+
+// Kopub 폰트의 기본 이름
+const KOPUB_DOTUM = 'KoPubWorld돋움체';
+const KOPUB_BATANG = 'KoPubWorld바탕체';
 
 const SelectFont = () => {
   const { settings, setSettings } = useUserSettings();
+  const os = useDeviceOS();
+
+  const isWindows = os === 'Windows';
+
+  const kopubDotum = isWindows ? `${KOPUB_DOTUM} Medium` : KOPUB_DOTUM;
+  const kopubBatang = isWindows ? `${KOPUB_BATANG} Medium` : KOPUB_BATANG;
 
   return (
     <div className={styles.section}>
@@ -25,21 +36,16 @@ const SelectFont = () => {
           <Select.Portal>
             <Select.Content className={styles.selectContent}>
               <Select.Viewport className={styles.selectViewport}>
-                {[
-                  'Pretendard',
-                  'KoPubWorld돋움체 Medium',
-                  'KoPubWorld바탕체 Medium',
-                  '나눔바른고딕',
-                  '나눔명조',
-                  '나눔손글씨 펜',
-                ].map((fontOption) => (
-                  <Select.Item key={fontOption} className={styles.selectItem} value={fontOption}>
-                    <Select.ItemText>{fontOption}</Select.ItemText>
-                    <Select.ItemIndicator className={styles.selectItemIndicator}>
-                      <Check />
-                    </Select.ItemIndicator>
-                  </Select.Item>
-                ))}
+                {['Pretendard', kopubDotum, kopubBatang, '나눔바른고딕', '나눔명조', '나눔손글씨 펜'].map(
+                  (fontOption) => (
+                    <Select.Item key={fontOption} className={styles.selectItem} value={fontOption}>
+                      <Select.ItemText>{fontOption}</Select.ItemText>
+                      <Select.ItemIndicator className={styles.selectItemIndicator}>
+                        <Check />
+                      </Select.ItemIndicator>
+                    </Select.Item>
+                  )
+                )}
               </Select.Viewport>
             </Select.Content>
           </Select.Portal>

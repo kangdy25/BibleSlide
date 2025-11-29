@@ -1,5 +1,6 @@
 import React, { createContext, useState, ReactNode, useMemo } from 'react';
 import { BibleVersion } from '../../main/constant/bible';
+import useDeviceOS from '../hooks/useDeviceOS';
 
 interface UserSettings {
   bibleVersion: BibleVersion;
@@ -24,10 +25,17 @@ interface UserSettingsProviderProps {
 }
 
 export const UserSettingsProvider = ({ children }: UserSettingsProviderProps) => {
+  // useDeviceOS를 통해 운영체제에 따라 KoPubWorld바탕체명 조건부 렌더링
+  const KOPUB_BATANG = 'KoPubWorld바탕체';
+  const os = useDeviceOS();
+
+  const isWindows = os === 'Windows';
+  const kopubBatang = isWindows ? `${KOPUB_BATANG} Medium` : KOPUB_BATANG;
+
   const [settings, setSettings] = useState<UserSettings>({
     bibleVersion: '개역개정',
     verseInput: '',
-    font: '나눔명조',
+    font: kopubBatang,
     align: 'left',
     isBold: '굵게',
     textSize: 30,
