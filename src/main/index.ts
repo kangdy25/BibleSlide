@@ -1,9 +1,18 @@
 import { app, BrowserWindow, dialog, ipcMain } from 'electron';
-import { autoUpdater } from 'electron-updater';
+import { AppUpdater, autoUpdater } from 'electron-updater';
 import path, { join } from 'path';
 import PptxGenJS from 'pptxgenjs';
 import { generatePPT } from './utils/generatePPT.ts';
 import { fetchVerses } from './utils/parseVerse.ts';
+
+interface WindowsUpdater extends AppUpdater {
+  verifyUpdateCodeSignature: boolean;
+}
+
+// 이 설정이 있어야 인증서(Code Signing) 없이도 GitHub Release 업데이트가 작동합니다.
+if (process.platform === 'win32') {
+  (autoUpdater as WindowsUpdater).verifyUpdateCodeSignature = false;
+}
 
 let mainWindow: BrowserWindow | null;
 
