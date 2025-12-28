@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main, 'feature/**' ]
+    branches: [main, 'feature/**']
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build-and-dev-check:
@@ -18,9 +18,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm install
 
+      - name: Run Tests
+        run: npm run test:run
+
       - name: Build project
-        run: npm run build || echo "Build script not ready yet"
+        run: npm run build
