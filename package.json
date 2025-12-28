@@ -9,7 +9,9 @@
     "start": "electron out/main/index.js",
     "build": "electron-vite build && electron-builder",
     "dist": "electron-builder",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run"
   },
   "repository": {
     "type": "git",
@@ -32,19 +34,24 @@
     "react-dom": "^19.2.1"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.1",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^4.6.0",
+    "@vitest/ui": "^4.0.16",
     "concurrently": "^9.0.1",
     "cross-env": "^7.0.3",
     "electron": "^37.2.6",
     "electron-builder": "^24.0.0",
     "electron-vite": "^4.0.0",
     "globals": "^16.3.0",
+    "jsdom": "^27.4.0",
     "prettier": "^3.6.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
     "vite": "^7.1.2",
+    "vitest": "^4.0.16",
     "wait-on": "^8.0.1"
   },
   "build": {
