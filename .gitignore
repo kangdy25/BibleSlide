@@ -136,7 +136,8 @@ dist
 .pnp.*
 
 # Bible data file
-src/data
+src/data/*
+!src/data/bible.test.json
 
 # Mac OS
 .DS_Store
