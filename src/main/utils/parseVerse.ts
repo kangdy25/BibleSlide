@@ -7,7 +7,7 @@ type BibleData = Record<string, Record<string, Record<string, Record<number, str
  * 다양한 형식의 성경 구절 입력을 파싱하는 객체입니다.
  * 예: "창1:1", "창세기 1:1", "Gen 1:1-3", "genesis1:1"
  */
-function parseInput(input: string): {
+export function parseInput(input: string): {
   book: string;
   fullName: string;
   engName: string;
@@ -26,7 +26,7 @@ function parseInput(input: string): {
   }
 
   // 2. 정규식 결과에서 각 부분을 추출합니다.
-  const [, bookName, chapterStr, startVerseStr, endVerseStr] = match;
+  const [_, bookName, chapterStr, startVerseStr, endVerseStr] = match;
   const chapter = parseInt(chapterStr, 10);
   const startVerse = parseInt(startVerseStr, 10);
   // 끝 절이 없으면 시작 절과 동일하게 설정합니다.
@@ -48,18 +48,17 @@ function parseInput(input: string): {
 
   // 4. 표준화된 결과 객체를 반환합니다.
   return {
-    book: foundBook.short, // bibleData에서 사용할 표준 약어 '창'을 반환
-    fullName: foundBook.full,
-    engName: foundBook.engFull,
-    chapter,
-    startVerse,
-    endVerse,
+    book: foundBook.short, // Ex: 창
+    fullName: foundBook.full, // Ex: 창세기
+    engName: foundBook.engFull, // Ex: Genesis
+    chapter, // Ex: 1
+    startVerse, // Ex: 1
+    endVerse, // Ex: 1
   };
 }
 
 // 기존 fetchVerses 함수는 그대로 사용 가능합니다.
 export function fetchVerses(input: string, version: string): string[] {
-  // Version 객체
   const abbrVersion = {
     개역개정: 'GAE',
     개역한글: 'RHV',
@@ -69,6 +68,11 @@ export function fetchVerses(input: string, version: string): string[] {
   } as const;
 
   const { book, fullName, engName, chapter, startVerse, endVerse } = parseInput(input);
+
+  if (startVerse > endVerse) {
+    throw new Error(`시작 절(${startVerse})이 끝 절(${endVerse})보다 클 수 없습니다.`);
+  }
+
   const verses: string[] = [];
   const versionKey = abbrVersion[version as keyof typeof abbrVersion];
 
