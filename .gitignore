@@ -141,3 +141,6 @@ src/data/*
 
 # Mac OS
 .DS_Store
+
+# Test coverage
+coverage/
