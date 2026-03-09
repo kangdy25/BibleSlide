@@ -1,18 +1,8 @@
-import { app, BrowserWindow, dialog, ipcMain } from 'electron';
-import { AppUpdater, autoUpdater } from 'electron-updater';
+import { app, BrowserWindow } from 'electron';
 import path, { join } from 'path';
-import PptxGenJS from 'pptxgenjs';
-import { generatePPT } from './utils/generatePPT.ts';
-import { fetchVerses } from './utils/parseVerse.ts';
-
-interface WindowsUpdater extends AppUpdater {
-  verifyUpdateCodeSignature: boolean;
-}
-
-// 이 설정이 있어야 인증서(Code Signing) 없이도 GitHub Release 업데이트가 작동합니다.
-if (process.platform === 'win32') {
-  (autoUpdater as WindowsUpdater).verifyUpdateCodeSignature = false;
-}
+import { checkForUpdates, setupAutoUpdater } from './services/updater.ts';
+import { registerVerseHandler } from './ipc/verseHandler.ts';
+import { registerPPTHandler } from './ipc/pptHandler.ts';
 
 let mainWindow: BrowserWindow | null;
 
@@ -41,152 +31,24 @@ function createWindow() {
   }
 }
 
-// 1. 업데이트 다운로드 완료 시 실행 (가장 중요)
-autoUpdater.on('update-downloaded', (info) => {
-  const dialogOpts = {
-    type: 'info' as const,
-    buttons: ['재시작 및 설치', '나중에'],
-    title: '업데이트 알림',
-    message: `새로운 버전(${info.version})이 준비되었습니다.`,
-    detail: '앱을 재시작하여 업데이트를 적용하시겠습니까?',
-  };
+// AutoUpdater 설정 초기화
+setupAutoUpdater();
 
-  dialog.showMessageBox(dialogOpts).then((returnValue) => {
-    if (returnValue.response === 0) {
-      // '재시작 및 설치' 클릭 시
-      autoUpdater.quitAndInstall(false, true);
-    }
-  });
-});
-
-// 2. 에러 발생 시 로그 출력 (선택 사항: 사용자에게 알릴 수도 있음)
-autoUpdater.on('error', (message) => {
-  console.error('업데이트 오류 발생:', message);
-});
-
-// 3. 업데이트 확인 중 (선택 사항: 디버깅용)
-autoUpdater.on('checking-for-update', () => {
-  console.log('업데이트 확인 중...');
-});
-
-// 4. 업데이트가 가능할 때 (선택 사항)
-autoUpdater.on('update-available', () => {
-  console.log('새로운 업데이트가 있습니다.');
-});
+// IPC 핸들러 등록
+registerVerseHandler();
+registerPPTHandler();
 
 app.whenReady().then(() => {
   createWindow();
 
   if (app.isPackaged) {
-    autoUpdater.checkForUpdatesAndNotify();
+    checkForUpdates();
   }
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
 });
-
-// -------------------------
-// IPC 핸들러: 성경 구절 가져오기
-// -------------------------
-ipcMain.handle('fetch-verse', (event, input: string, bibleVersion: string = 'GAE') => {
-  try {
-    const verses = fetchVerses(input, bibleVersion);
-    return verses;
-  } catch (err: unknown) {
-    return [`Error: ${(err as Error).message}`];
-  }
-});
-
-// -------------------------
-// IPC 핸들러: PPT 생성하기
-// -------------------------
-ipcMain.handle(
-  'generate-slide',
-  async (
-    event,
-    data: {
-      input: string;
-      bibleVersion: string;
-      align: 'left' | 'center' | 'right';
-      font: string;
-      isBold: '가늘게' | '굵게';
-      textSize: number;
-      letterSpacing: number;
-      lineHeight: number;
-    }
-  ) => {
-    try {
-      const { input, bibleVersion, align, font, isBold, textSize, letterSpacing, lineHeight } = data;
-      const verses = fetchVerses(input, bibleVersion);
-
-      let fontWeight;
-      if (isBold === '가늘게') {
-        fontWeight = false;
-      } else {
-        fontWeight = true;
-      }
-
-      let pptx: PptxGenJS;
-
-      verses.forEach((verse, idx) => {
-        const title = `${verse.split(':')[1]} ${verse.split(':')[3]}장 ${verse.split(':')[4]}절`;
-        const subTitle = `${verse.split(':')[1]} ${verse.split(':')[3]}장`;
-        const engTitle = `${verse.split(':')[2]} ${verse.split(':')[3]}:${verse.split(':')[4]}`;
-        const engSubTitle = `${verse.split(':')[2]} ${verse.split(':')[3]}`;
-        const verseContent = `${verse.split(':')[5]}`;
-
-        if (bibleVersion === 'KJV' || bibleVersion === 'NIV') {
-          // 영어 버전인 경우, 제목과 소제목을 영어로 구성
-          pptx = generatePPT(
-            engTitle,
-            engSubTitle,
-            verseContent,
-            align,
-            font,
-            fontWeight,
-            textSize,
-            letterSpacing,
-            lineHeight,
-            pptx
-          );
-        } else {
-          // pptx가 undefined이면 새로 생성, 있으면 슬라이드 추가
-          pptx = generatePPT(
-            title,
-            subTitle,
-            verseContent,
-            align,
-            font,
-            fontWeight,
-            textSize,
-            letterSpacing,
-            lineHeight,
-            pptx
-          );
-        }
-      });
-
-      // 파일 저장 다이얼로그
-      const saveFileName = input.replace(/^([가-힣a-zA-Z]+)\s*(\d+)[:|-](.*)$/, '$1$2장$3절');
-
-      const { filePath } = await dialog.showSaveDialog({
-        title: 'Save PowerPoint File',
-        defaultPath: `${saveFileName}.pptx`,
-        filters: [{ name: 'PowerPoint', extensions: ['pptx'] }],
-      });
-
-      if (filePath) {
-        await pptx!.writeFile({ fileName: filePath });
-        return { success: true, message: `파일이 ${filePath}에 저장되었습니다.` };
-      }
-
-      return { success: false, message: '파일 저장이 취소되었습니다.' };
-    } catch (err: unknown) {
-      return `PPT 슬라이드 생성 오류:  ${(err as Error).message}`;
-    }
-  }
-);
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
