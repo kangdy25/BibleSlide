@@ -7,4 +7,6 @@ class ResizeObserverMock {
   disconnect() {}
 }
 
-window.ResizeObserver = ResizeObserverMock;
+if (typeof window !== 'undefined') {
+  window.ResizeObserver = ResizeObserverMock;
+}

@@ -9,6 +9,15 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./src/renderer/tests/setup.ts'],
     include: ['src/**/*.{test,spec}.{ts,tsx}'],
+    coverage: {
+      exclude: [
+        '**/*.json',
+        '**/*.css',
+        '**/*.d.ts',
+        '**/*.config.*',
+        '**/tests/setup.ts',
+      ],
+    },
   },
   resolve: {
     alias: {
