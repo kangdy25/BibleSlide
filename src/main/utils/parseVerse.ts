@@ -91,7 +91,7 @@ export function fetchVerses(input: string, version: string): string[] {
     finalEnd = Math.max(...verseKeys);
   } else {
     finalStart = startVerse;
-    finalEnd = endVerse ?? startVerse;
+    finalEnd = endVerse!;
   }
 
   if (finalStart > finalEnd) {

@@ -76,7 +76,7 @@ export function registerPPTHandler(): void {
 
         // 파일 저장 다이얼로그
         const webContents = event.sender;
-        const win = BrowserWindow.fromWebContents(webContents);
+        const win = webContents ? BrowserWindow.fromWebContents(webContents) : null;
 
         // parseInput을 사용하여 안전하게 파일명 작성
         let saveFileName = '';
@@ -100,9 +100,13 @@ export function registerPPTHandler(): void {
           filters: [{ name: 'PowerPoint', extensions: ['pptx'] }],
         };
 
-        const { filePath } = win
-          ? await dialog.showSaveDialog(win, dialogOptions)
-          : await dialog.showSaveDialog(dialogOptions);
+        let resultDialog;
+        if (win) {
+          resultDialog = await dialog.showSaveDialog(win, dialogOptions);
+        } else {
+          resultDialog = await dialog.showSaveDialog(dialogOptions);
+        }
+        const { filePath } = resultDialog;
 
         if (filePath) {
           await pptx!.writeFile({ fileName: filePath });
@@ -123,7 +127,7 @@ export function registerPPTHandler(): void {
     'show-alert',
     async (event, message: string, type: 'info' | 'warning' | 'error' = 'info') => {
       const webContents = event.sender;
-      const win = BrowserWindow.fromWebContents(webContents);
+      const win = webContents ? BrowserWindow.fromWebContents(webContents) : null;
       const title = type === 'error' ? '오류' : type === 'warning' ? '경고' : '알림';
 
       const dialogOptions = {
@@ -135,10 +139,11 @@ export function registerPPTHandler(): void {
 
       if (win) {
         await dialog.showMessageBox(win, dialogOptions);
+        return { success: true };
       } else {
         await dialog.showMessageBox(dialogOptions);
+        return { success: true };
       }
-      return { success: true };
     }
   );
 }

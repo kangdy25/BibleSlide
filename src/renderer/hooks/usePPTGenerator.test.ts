@@ -11,7 +11,7 @@ vi.mock('../contexts/useUserSettings', () => ({
 describe('usePPTGenerator 훅 테스트', () => {
   // window.electronAPI 모킹을 위한 준비
   const mockGenerateSlide = vi.fn();
-  const mockShowAlert = vi.fn();
+  const mockShowAlert = vi.fn().mockResolvedValue({ success: true });
   const mockConsoleError = vi.fn();
 
   beforeEach(() => {
@@ -26,6 +26,17 @@ describe('usePPTGenerator 훅 테스트', () => {
     
     // console.error 스파이
     vi.spyOn(console, 'error').mockImplementation(mockConsoleError);
+
+    // navigator.clipboard 모킹
+    Object.assign(navigator, {
+      clipboard: {
+        writeText: vi.fn().mockResolvedValue(undefined),
+      },
+    });
+
+    // 가상 DOM에 input 엘리먼트 배치
+    const input = document.createElement('input');
+    document.body.appendChild(input);
   });
 
   beforeEach(() => {
@@ -35,6 +46,12 @@ describe('usePPTGenerator 훅 테스트', () => {
   afterEach(() => {
     vi.restoreAllMocks();
     vi.useRealTimers();
+
+    // 가상 DOM 정리
+    const input = document.querySelector('input');
+    if (input) {
+      document.body.removeChild(input);
+    }
   });
 
   it('초기 상태에서 isLoading은 false여야 한다', () => {
@@ -57,6 +74,7 @@ describe('usePPTGenerator 훅 테스트', () => {
 
     await act(async () => {
       await result.current.generatePPT();
+      vi.runAllTimers();
     });
 
     expect(mockShowAlert).toHaveBeenCalledWith('성경 구절을 입력해주세요.', 'warning');
@@ -90,6 +108,7 @@ describe('usePPTGenerator 훅 테스트', () => {
     await act(async () => {
       const promise = result.current.generatePPT();
       await promise;
+      vi.runAllTimers();
     });
 
     // 호출 파라미터 확인 (settings 기반 데이터 매핑 확인)
@@ -119,6 +138,7 @@ describe('usePPTGenerator 훅 테스트', () => {
 
     await act(async () => {
       await result.current.generatePPT();
+      vi.runAllTimers();
     });
 
     expect(mockShowAlert).toHaveBeenCalledWith('PPT 생성 실패: 알 수 없는 오류', 'error');
@@ -138,10 +158,109 @@ describe('usePPTGenerator 훅 테스트', () => {
 
     await act(async () => {
       await result.current.generatePPT();
+      vi.runAllTimers();
     });
 
     expect(mockConsoleError).toHaveBeenCalledWith('IPC 통신 오류:', error);
     expect(mockShowAlert).toHaveBeenCalledWith('PPT 생성 중 오류가 발생했습니다.', 'error');
     expect(result.current.isLoading).toBe(false);
+  });
+
+  describe('copyVerses 기능 테스트', () => {
+    it('성경 구절 입력이 없으면 경고창을 띄우고 중단해야 한다', async () => {
+      (useUserSettings as any).mockReturnValue({
+        settings: { verseInput: '' },
+      });
+
+      const { result } = renderHook(() => usePPTGenerator());
+
+      await act(async () => {
+        await result.current.copyVerses();
+        vi.runAllTimers();
+      });
+
+      expect(mockShowAlert).toHaveBeenCalledWith('성경 구절을 입력해주세요.', 'warning');
+      expect(result.current.isLoading).toBe(false);
+    });
+
+    it('성경 구절 조회가 성공하면 클립보드에 복사하고 성공 알림을 보여줘야 한다', async () => {
+      (useUserSettings as any).mockReturnValue({
+        settings: { verseInput: '창1:1', bibleVersion: '개역개정' },
+      });
+
+      const mockFetchVerse = vi.fn().mockResolvedValue(['창:창세기:Genesis:1:1:태초에...']);
+      window.electronAPI.fetchVerse = mockFetchVerse;
+
+      const { result } = renderHook(() => usePPTGenerator());
+
+      await act(async () => {
+        await result.current.copyVerses();
+        vi.runAllTimers();
+      });
+
+      expect(mockFetchVerse).toHaveBeenCalledWith('창1:1', '개역개정');
+      expect(navigator.clipboard.writeText).toHaveBeenCalledWith('창세기 1:1 태초에...');
+      expect(mockShowAlert).toHaveBeenCalledWith('성경 구절이 클립보드에 복사되었습니다.', 'info');
+      expect(result.current.isLoading).toBe(false);
+    });
+
+    it('조회된 구절이 없거나 에러가 있으면 에러 메시지를 보여줘야 한다', async () => {
+      (useUserSettings as any).mockReturnValue({
+        settings: { verseInput: '창1:1', bibleVersion: '개역개정' },
+      });
+
+      // 에러 반환 모킹
+      window.electronAPI.fetchVerse = vi.fn().mockResolvedValue(['Error: 구절을 찾을 수 없습니다.']);
+
+      const { result } = renderHook(() => usePPTGenerator());
+
+      await act(async () => {
+        await result.current.copyVerses();
+        vi.runAllTimers();
+      });
+
+      expect(mockShowAlert).toHaveBeenCalledWith('구절 조회 실패: 구절을 찾을 수 없습니다.', 'error');
+      expect(result.current.isLoading).toBe(false);
+    });
+
+    it('복사 로직 수행 중 예외 발생 시 에러 처리를 해야 한다', async () => {
+      (useUserSettings as any).mockReturnValue({
+        settings: { verseInput: '창1:1' },
+      });
+
+      const error = new Error('Clipboard Failed');
+      window.electronAPI.fetchVerse = vi.fn().mockRejectedValue(error);
+
+      const { result } = renderHook(() => usePPTGenerator());
+
+      await act(async () => {
+        await result.current.copyVerses();
+        vi.runAllTimers();
+      });
+
+      expect(mockConsoleError).toHaveBeenCalledWith('구절 복사 오류:', error);
+      expect(mockShowAlert).toHaveBeenCalledWith('구절 복사 중 오류가 발생했습니다.', 'error');
+      expect(result.current.isLoading).toBe(false);
+    });
+
+    it('구절 형식의 파트 개수가 6개 미만이면 원래 문자열을 그대로 반환하여 복사해야 한다', async () => {
+      (useUserSettings as any).mockReturnValue({
+        settings: { verseInput: '창1:1', bibleVersion: '개역개정' },
+      });
+
+      const mockFetchVerse = vi.fn().mockResolvedValue(['짧은구절', '창:창세기:Genesis:1:1:태초에...']);
+      window.electronAPI.fetchVerse = mockFetchVerse;
+
+      const { result } = renderHook(() => usePPTGenerator());
+
+      await act(async () => {
+        await result.current.copyVerses();
+        vi.runAllTimers();
+      });
+
+      expect(navigator.clipboard.writeText).toHaveBeenCalledWith('짧은구절\n창세기 1:1 태초에...');
+      expect(mockShowAlert).toHaveBeenCalledWith('성경 구절이 클립보드에 복사되었습니다.', 'info');
+      expect(result.current.isLoading).toBe(false);
+    });
   });
 });

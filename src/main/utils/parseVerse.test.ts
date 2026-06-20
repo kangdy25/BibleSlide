@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { fetchVerses, parseInput } from './parseVerse';
+import bibleData from '../../data/bible.json';
 
 describe('성경 구절 유틸리티 테스트', () => {
   describe('parseInput 함수 (단위 테스트)', () => {
@@ -89,6 +90,21 @@ describe('성경 구절 유틸리티 테스트', () => {
 
     it('존재하지 않는 버전 요청 시 에러가 발생해야 한다', () => {
       expect(() => fetchVerses('창1:1', '없는버전')).toThrow(/찾을 수 없습니다./);
+    });
+
+    it('존재하지 않는 장을 요청하면 에러를 던져야 한다', () => {
+      expect(() => fetchVerses('창200', DEFAULT_VERSION)).toThrow(/장을 찾을 수 없습니다/);
+    });
+
+    it('구절이 없는 장을 요청하면 에러를 던져야 한다', () => {
+      const gaeBible = (bibleData as any).GAE;
+      if (gaeBible && gaeBible['창']) {
+        gaeBible['창']['999'] = {}; // 가상 빈 장 추가
+      }
+      expect(() => fetchVerses('창999', DEFAULT_VERSION)).toThrow(/구절이 없습니다/);
+      if (gaeBible && gaeBible['창']) {
+        delete gaeBible['창']['999'];
+      }
     });
   });
 });

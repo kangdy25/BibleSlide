@@ -2,7 +2,7 @@
  * @vitest-environment node
  */
 import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
-import { ipcMain, dialog } from 'electron';
+import { ipcMain, dialog, BrowserWindow } from 'electron';
 import { registerPPTHandler } from './pptHandler';
 import { fetchVerses } from '../utils/parseVerse';
 import { generatePPT } from '../utils/generatePPT';
@@ -14,6 +14,7 @@ vi.mock('electron', () => ({
   },
   dialog: {
     showSaveDialog: vi.fn(),
+    showMessageBox: vi.fn(),
   },
   BrowserWindow: {
     fromWebContents: vi.fn().mockReturnValue({}),
@@ -164,5 +165,152 @@ describe('PPT 생성 핸들러 (PPT Handler)', () => {
         expect.anything(),
         undefined // 1st call pptx is undefined
     );
+  });
+
+  it('win이 없을 때 win 없이 dialog.showSaveDialog를 호출해야 한다', async () => {
+    (fetchVerses as Mock).mockReturnValue(['Bible:요한복음:John:3:16:내용']);
+    (generatePPT as Mock).mockReturnValue({ writeFile: vi.fn().mockResolvedValue(undefined) });
+    (dialog.showSaveDialog as Mock).mockResolvedValue({ filePath: 'C:/save.pptx' });
+
+    await handler({ sender: null }, mockData);
+
+    expect(dialog.showSaveDialog).toHaveBeenCalledWith(
+      expect.objectContaining({
+        title: 'Save PowerPoint File'
+      })
+    );
+  });
+
+  it('parseInput에서 에러 발생 시 백업 정규식을 활용하여 파일 이름을 생성해야 한다', async () => {
+    const { parseInput } = await import('../utils/parseVerse');
+    (parseInput as Mock).mockImplementationOnce(() => {
+      throw new Error('Parsing Error');
+    });
+    (fetchVerses as Mock).mockReturnValue(['Bible:요한복음:John:3:16:내용']);
+    (generatePPT as Mock).mockReturnValue({ writeFile: vi.fn().mockResolvedValue(undefined) });
+    (dialog.showSaveDialog as Mock).mockResolvedValue({ filePath: 'C:/save.pptx' });
+
+    await handler({ sender: {} }, { ...mockData, input: '요3:16' });
+
+    expect(dialog.showSaveDialog).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        defaultPath: '요3장16절.pptx'
+      })
+    );
+  });
+
+  it('범위 구절을 생성할 때 saveFileName에 시작절과 끝절 범위가 포함되어야 한다', async () => {
+    const { parseInput } = await import('../utils/parseVerse');
+    (parseInput as Mock).mockReturnValueOnce({
+      book: '요',
+      fullName: '요한복음',
+      engName: 'John',
+      chapter: 3,
+      startVerse: 16,
+      endVerse: 17,
+    });
+    (fetchVerses as Mock).mockReturnValue([
+      'Bible:요한복음:John:3:16:내용1',
+      'Bible:요한복음:John:3:17:내용2',
+    ]);
+    (generatePPT as Mock).mockReturnValue({ writeFile: vi.fn().mockResolvedValue(undefined) });
+    (dialog.showSaveDialog as Mock).mockResolvedValue({ filePath: 'C:/save.pptx' });
+
+    const rangeMockData = {
+      ...mockData,
+      input: '요3:16-17',
+    };
+
+    await handler({ sender: {} }, rangeMockData);
+
+    expect(dialog.showSaveDialog).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        defaultPath: '요3장16-17절.pptx',
+      })
+    );
+  });
+
+  it('장수만 입력했을 때 saveFileName에 장 단위 파일명이 지정되어야 한다', async () => {
+    const { parseInput } = await import('../utils/parseVerse');
+    (parseInput as Mock).mockReturnValueOnce({
+      book: '요',
+      fullName: '요한복음',
+      engName: 'John',
+      chapter: 3,
+      startVerse: undefined,
+      endVerse: undefined,
+    });
+    (fetchVerses as Mock).mockReturnValue([
+      'Bible:요한복음:John:3:1:내용1',
+    ]);
+    (generatePPT as Mock).mockReturnValue({ writeFile: vi.fn().mockResolvedValue(undefined) });
+    (dialog.showSaveDialog as Mock).mockResolvedValue({ filePath: 'C:/save.pptx' });
+
+    const chapterMockData = {
+      ...mockData,
+      input: '요3',
+    };
+
+    await handler({ sender: {} }, chapterMockData);
+
+    expect(dialog.showSaveDialog).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        defaultPath: '요3장.pptx',
+      })
+    );
+  });
+
+  describe('show-alert 핸들러 테스트', () => {
+    let showAlertHandler: Function;
+
+    beforeEach(() => {
+      (ipcMain.handle as Mock).mockImplementation((channel, listener) => {
+        if (channel === 'show-alert') {
+          showAlertHandler = listener;
+        }
+      });
+      registerPPTHandler();
+    });
+
+    it('show-alert 핸들러가 ipcMain에 등록되어야 한다', () => {
+      expect(ipcMain.handle).toHaveBeenCalledWith('show-alert', expect.any(Function));
+    });
+
+    it('dialog.showMessageBox를 호출하고 성공을 반환해야 한다', async () => {
+      (dialog.showMessageBox as Mock).mockResolvedValue({ response: 0 });
+
+      const result = await showAlertHandler({ sender: {} }, '테스트 메시지', 'info');
+
+      expect(dialog.showMessageBox).toHaveBeenCalled();
+      expect(result).toEqual({ success: true });
+    });
+
+    it('win이 없을 때도 dialog.showMessageBox를 호출하고 성공을 반환해야 한다', async () => {
+      (dialog.showMessageBox as Mock).mockResolvedValue({ response: 0 });
+
+      const result = await showAlertHandler({ sender: null }, '테스트 메시지', 'warning');
+
+      expect(dialog.showMessageBox).toHaveBeenCalled();
+      expect(result).toEqual({ success: true });
+    });
+
+    it('type이 error일 때 타이틀이 오류로 설정되어야 한다', async () => {
+      (dialog.showMessageBox as Mock).mockResolvedValue({ response: 0 });
+
+      const result = await showAlertHandler({ sender: {} }, '에러 메시지', 'error');
+
+      expect(dialog.showMessageBox).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({
+          type: 'error',
+          title: '오류',
+          message: '에러 메시지'
+        })
+      );
+      expect(result).toEqual({ success: true });
+    });
   });
 });
