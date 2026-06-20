@@ -1,7 +1,7 @@
-import { ipcMain, dialog } from 'electron';
+import { ipcMain, dialog, BrowserWindow } from 'electron';
 import PptxGenJS from 'pptxgenjs';
 import { generatePPT } from '../utils/generatePPT';
-import { fetchVerses } from '../utils/parseVerse';
+import { fetchVerses, parseInput } from '../utils/parseVerse';
 
 export function registerPPTHandler(): void {
   // -------------------------
@@ -75,13 +75,38 @@ export function registerPPTHandler(): void {
         });
 
         // 파일 저장 다이얼로그
-        const saveFileName = input.replace(/^([가-힣a-zA-Z]+)\s*(\d+)[:|-](.*)$/, '$1$2장$3절');
+        const webContents = event.sender;
+        const win = webContents ? BrowserWindow.fromWebContents(webContents) : null;
 
-        const { filePath } = await dialog.showSaveDialog({
+        // parseInput을 사용하여 안전하게 파일명 작성
+        let saveFileName = '';
+        try {
+          const parsed = parseInput(input);
+          if (parsed.startVerse === undefined) {
+            saveFileName = `${parsed.book}${parsed.chapter}장`;
+          } else if (parsed.startVerse === parsed.endVerse) {
+            saveFileName = `${parsed.book}${parsed.chapter}장${parsed.startVerse}절`;
+          } else {
+            saveFileName = `${parsed.book}${parsed.chapter}장${parsed.startVerse}-${parsed.endVerse}절`;
+          }
+        } catch {
+          // 예외 상황 시 기존 정규식 백업
+          saveFileName = input.replace(/^([가-힣a-zA-Z]+)\s*(\d+)[:|-](.*)$/, '$1$2장$3절');
+        }
+
+        const dialogOptions = {
           title: 'Save PowerPoint File',
           defaultPath: `${saveFileName}.pptx`,
           filters: [{ name: 'PowerPoint', extensions: ['pptx'] }],
-        });
+        };
+
+        let resultDialog;
+        if (win) {
+          resultDialog = await dialog.showSaveDialog(win, dialogOptions);
+        } else {
+          resultDialog = await dialog.showSaveDialog(dialogOptions);
+        }
+        const { filePath } = resultDialog;
 
         if (filePath) {
           await pptx!.writeFile({ fileName: filePath });
@@ -91,6 +116,33 @@ export function registerPPTHandler(): void {
         return { success: false, message: '파일 저장이 취소되었습니다.' };
       } catch (err: unknown) {
         return `PPT 슬라이드 생성 오류:  ${(err as Error).message}`;
+      }
+    }
+  );
+
+  // -------------------------
+  // IPC 핸들러: 네이티브 경고/알림 창 띄우기
+  // -------------------------
+  ipcMain.handle(
+    'show-alert',
+    async (event, message: string, type: 'info' | 'warning' | 'error' = 'info') => {
+      const webContents = event.sender;
+      const win = webContents ? BrowserWindow.fromWebContents(webContents) : null;
+      const title = type === 'error' ? '오류' : type === 'warning' ? '경고' : '알림';
+
+      const dialogOptions = {
+        type,
+        title,
+        message,
+        buttons: ['확인'],
+      };
+
+      if (win) {
+        await dialog.showMessageBox(win, dialogOptions);
+        return { success: true };
+      } else {
+        await dialog.showMessageBox(dialogOptions);
+        return { success: true };
       }
     }
   );
