@@ -1,6 +1,8 @@
 .exportSection {
   display: flex;
   justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
 }
 
 .exportButton {
@@ -8,13 +10,13 @@
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 2rem;
-  width: 100%;
+  padding: 0.75rem 1rem;
+  flex: 1;
   background: rgb(56, 94, 231);
   color: white;
   border: 1px solid rgba(59, 130, 246, 0.6);
   border-radius: 0.5rem;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -35,4 +37,41 @@
   color: white;
   box-shadow: none;
   border: none;
+}
+
+.copyButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  flex: 1;
+  background: rgb(50, 50, 50);
+  color: #e0e0e0;
+  border: 1px solid rgba(100, 100, 100, 0.4);
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow:
+    0 0 5px rgba(0, 0, 0, 0.3),
+    inset 0 0 5px rgba(255, 255, 255, 0.05);
+}
+
+.copyButton:hover {
+  background: rgb(20, 20, 20);
+  color: white;
+  border-color: rgba(150, 150, 150, 0.6);
+  box-shadow:
+    0 0 10px rgba(0, 0, 0, 0.5),
+    inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.copyButton:disabled {
+  background-color: #333333;
+  color: #777777;
+  border-color: rgba(50, 50, 50, 0.4);
+  box-shadow: none;
+  cursor: not-allowed;
 }

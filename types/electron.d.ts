@@ -11,8 +11,9 @@ export interface SlideDataType {
 declare global {
   interface Window {
     electronAPI: {
-      fetchVerse: (input: string, version: string) => Promise<string>;
+      fetchVerse: (input: string, version: string) => Promise<string[]>;
       generateSlide: (data: SlideDataType) => Promise<{ success: boolean; message: string }>;
+      showAlert: (message: string, type?: 'info' | 'warning' | 'error') => Promise<{ success: boolean }>;
     };
   }
 }

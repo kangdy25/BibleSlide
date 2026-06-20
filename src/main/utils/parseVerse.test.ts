@@ -15,6 +15,18 @@ describe('성경 구절 유틸리티 테스트', () => {
       });
     });
 
+    it('장수만 입력한 형식을 올바르게 파싱해야 한다', () => {
+      const result = parseInput('창1');
+      expect(result).toEqual({
+        book: '창',
+        fullName: '창세기',
+        engName: 'Genesis',
+        chapter: 1,
+        startVerse: undefined,
+        endVerse: undefined,
+      });
+    });
+
     it('범위 입력을 올바르게 객체로 변환해야 한다', () => {
       const result = parseInput('Genesis 1:1-3');
       expect(result).toMatchObject({
@@ -43,6 +55,13 @@ describe('성경 구절 유틸리티 테스트', () => {
     it('단일 구절 조회 시 결과 배열의 길이는 1이어야 한다', () => {
       const result = fetchVerses('창1:1', DEFAULT_VERSION);
       expect(result).toHaveLength(1);
+    });
+
+    it('장수만 요청하면 해당 장의 1절부터 마지막 절까지 반환해야 한다', () => {
+      const result = fetchVerses('창1', DEFAULT_VERSION);
+      expect(result).toHaveLength(31);
+      expect(result[0]).toContain(':1:');
+      expect(result[30]).toContain(':31:');
     });
 
     it('여러 절을 요청하면 요청한 개수만큼 반환해야 한다', () => {

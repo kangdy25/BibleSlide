@@ -15,6 +15,9 @@ vi.mock('electron', () => ({
   dialog: {
     showSaveDialog: vi.fn(),
   },
+  BrowserWindow: {
+    fromWebContents: vi.fn().mockReturnValue({}),
+  },
 }));
 
 // pptxgenjs 모듈 모의
@@ -31,6 +34,14 @@ vi.mock('../utils/generatePPT', () => ({
 
 vi.mock('../utils/parseVerse', () => ({
   fetchVerses: vi.fn(),
+  parseInput: vi.fn().mockReturnValue({
+    book: '요한복음',
+    fullName: '요한복음',
+    engName: 'John',
+    chapter: 3,
+    startVerse: 16,
+    endVerse: 16,
+  }),
 }));
 
 describe('PPT 생성 핸들러 (PPT Handler)', () => {

@@ -11,25 +11,30 @@ vi.mock('../contexts/useUserSettings', () => ({
 describe('usePPTGenerator 훅 테스트', () => {
   // window.electronAPI 모킹을 위한 준비
   const mockGenerateSlide = vi.fn();
-  const mockAlert = vi.fn();
+  const mockShowAlert = vi.fn();
   const mockConsoleError = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
 
-    // window 객체에 electronAPI 및 alert 모킹 주입
+    // window 객체에 electronAPI 모킹 주입
     // @ts-ignore - 테스트 환경에서 window 객체 확장
     window.electronAPI = {
       generateSlide: mockGenerateSlide,
+      showAlert: mockShowAlert,
     };
-    window.alert = mockAlert;
     
     // console.error 스파이
     vi.spyOn(console, 'error').mockImplementation(mockConsoleError);
   });
 
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
   afterEach(() => {
     vi.restoreAllMocks();
+    vi.useRealTimers();
   });
 
   it('초기 상태에서 isLoading은 false여야 한다', () => {
@@ -54,7 +59,7 @@ describe('usePPTGenerator 훅 테스트', () => {
       await result.current.generatePPT();
     });
 
-    expect(mockAlert).toHaveBeenCalledWith('성경 구절을 입력해주세요.');
+    expect(mockShowAlert).toHaveBeenCalledWith('성경 구절을 입력해주세요.', 'warning');
     expect(mockGenerateSlide).not.toHaveBeenCalled();
     expect(result.current.isLoading).toBe(false);
   });
@@ -99,7 +104,7 @@ describe('usePPTGenerator 훅 테스트', () => {
       lineHeight: mockDataSettings.lineHeight,
     });
 
-    expect(mockAlert).toHaveBeenCalledWith('생성 성공');
+    expect(mockShowAlert).toHaveBeenCalledWith('생성 성공', 'info');
     expect(result.current.isLoading).toBe(false);
   });
 
@@ -116,7 +121,7 @@ describe('usePPTGenerator 훅 테스트', () => {
       await result.current.generatePPT();
     });
 
-    expect(mockAlert).toHaveBeenCalledWith('PPT 생성 실패: 알 수 없는 오류');
+    expect(mockShowAlert).toHaveBeenCalledWith('PPT 생성 실패: 알 수 없는 오류', 'error');
     expect(result.current.isLoading).toBe(false);
   });
 
@@ -136,7 +141,7 @@ describe('usePPTGenerator 훅 테스트', () => {
     });
 
     expect(mockConsoleError).toHaveBeenCalledWith('IPC 통신 오류:', error);
-    expect(mockAlert).toHaveBeenCalledWith('PPT 생성 중 오류가 발생했습니다.');
+    expect(mockShowAlert).toHaveBeenCalledWith('PPT 생성 중 오류가 발생했습니다.', 'error');
     expect(result.current.isLoading).toBe(false);
   });
 });
