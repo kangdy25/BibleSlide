@@ -1,0 +1,30 @@
+{
+  "background": {
+    "imagePath": "D:\\100.personal\\00B2p\\BibleSlide_from_kangdy25\\assets\\backgrounds\\bg_flower.jpg",
+    "opacity": 0.15,
+    "useImage": true
+  },
+  "title": {
+    "fontSize": 48,
+    "color": "1B3A8B",
+    "fontFace": "나눔바른고딕",
+    "bold": true
+  },
+  "content": {
+    "fontSize": 28,
+    "color": "000000",
+    "fontFace": "나눔바른고딕",
+    "bold": false,
+    "lineHeight": 1.5
+  },
+  "footer": {
+    "fontSize": 12,
+    "color": "666666",
+    "fontFace": "나눔바른고딕"
+  },
+  "dividerLine": {
+    "color": "CCCCCC",
+    "width": 2,
+    "dashType": "dash"
+  }
+}
