@@ -1,0 +1,196 @@
+.lyricsPage {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 100vh;
+  color-scheme: dark;
+}
+
+.lyricsBrand {
+  margin: 0;
+}
+
+.mainContent.lyricsWorkspace {
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  grid-template-rows: minmax(0, 1fr);
+  width: 100%;
+  min-height: 0;
+  padding-block: 1rem;
+  overflow-y: auto;
+  align-items: start;
+}
+
+.lyricsCard,
+.lyricsDesign {
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.lyricsCard {
+  display: grid;
+  align-content: start;
+}
+
+.lyricsDesign {
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+}
+
+.lyricsDesign > :not(.lyricsPreviewStage) {
+  flex: none;
+}
+
+.lyricsPreviewStage {
+  display: grid;
+  place-items: center;
+  flex: 0 1 auto;
+  min-height: 0;
+  width: 100%;
+  container-type: size;
+}
+
+.lyricsCard {
+  padding: 1.25rem;
+}
+
+.lyricsCard.lyricsEditor {
+  gap: 1rem;
+}
+
+.lyricsField {
+  display: grid;
+  gap: 0.4rem;
+  min-width: 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.lyricsInput,
+.lyricsButton,
+.bibleFormat select {
+  box-sizing: border-box;
+  min-width: 0;
+  color: inherit;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 0.55rem 0.7rem;
+  font: inherit;
+}
+
+.lyricsInput:focus,
+.lyricsButton:focus-visible {
+  outline: 2px solid rgba(59, 130, 246, 0.7);
+  outline-offset: 1px;
+}
+
+textarea.lyricsSource {
+  height: 16rem;
+  line-height: 1.45;
+  overflow-y: auto;
+  resize: none;
+}
+
+.lyricsButton {
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.lyricsButton:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.lyricsButton:disabled,
+.lyricsInput:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.lyricsPreview {
+  container-type: inline-size;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  background: #000;
+}
+
+.lyricsPreviewTitle {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  white-space: nowrap;
+  overflow: hidden;
+  color: #fff;
+  font-weight: 700;
+}
+
+.lyricsPreviewText {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  white-space: pre-wrap;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+
+.lyricsPreviewText > div {
+  width: 100%;
+}
+
+.lyricsPreviewEmpty {
+  margin: 0 1rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 0.5rem;
+  background: rgba(0, 0, 0, 0.65);
+  color: rgba(249, 250, 251, 0.85);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.lyricsPreviewToolbar,
+.lyricsPreviewNavigation {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.lyricsPreviewNavigation {
+  color: #d1d5db;
+  font-size: 0.875rem;
+}
+
+.lyricsPreviewNavigation .lyricsButton {
+  display: grid;
+  place-items: center;
+  padding: 0.35rem;
+}
+
+.lyricsFormat {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.65rem;
+  font-size: 0.875rem;
+}
+
+.lyricsTypography {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.lyricsWarning,
+.bibleWarning {
+  color: #fbbf24;
+  margin: 0;
+}
+
+.lyricsStatus {
+  margin: 0;
+  font-size: 0.875rem;
+  overflow-wrap: anywhere;
+}

@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import styles from './SelectFont.module.css';
 import * as Select from '@radix-ui/react-select';
 import { ChevronDown, Check } from 'lucide-react';
@@ -19,8 +20,17 @@ const FONT_OPTIONS_BASE = [
   '나눔손글씨 펜',
 ];
 
-const SelectFont = () => {
-  const { settings, setSettings } = useUserSettings();
+type FontWeight = '가늘게' | '굵게';
+
+interface FontSettingsProps {
+  font: string;
+  weight: FontWeight;
+  onFontChange: (font: string) => void;
+  onWeightChange: (weight: FontWeight) => void;
+}
+
+export function FontSettings({ font, weight, onFontChange, onWeightChange }: FontSettingsProps) {
+  const id = useId();
   const os = useDeviceOS();
   const isWindows = os === 'Windows';
 
@@ -38,13 +48,12 @@ const SelectFont = () => {
       <div className={styles.fontSelect}>
         <label className={styles.sectionLabel}>폰트 설정</label>
         <Select.Root
-          // value에는 settings.font (Medium이 포함될 수 있는 최종 이름)을 사용합니다.
-          value={settings.font}
-          onValueChange={(value) => setSettings((prev) => ({ ...prev, font: value }))}
+          value={font}
+          onValueChange={onFontChange}
         >
-          <Select.Trigger className={styles.selectTrigger}>
+          <Select.Trigger aria-label="글꼴" className={styles.selectTrigger}>
             {/* Windows 운영체제일 때, Context API에서 붙이는 KoPub 폰트명의 Medium을 제거하기 */}
-            <Select.Value>{settings.font.replace(' Medium', '')}</Select.Value>
+            <Select.Value>{font.replace(' Medium', '')}</Select.Value>
             <Select.Icon className={styles.selectIcon}>
               <ChevronDown />
             </Select.Icon>
@@ -74,22 +83,25 @@ const SelectFont = () => {
       <div className={styles.boldSelect}>
         <RadioGroup.Root
           className={styles.radioGroup}
-          defaultValue={settings.isBold}
-          onValueChange={(value: '가늘게' | '굵게') => setSettings((prev) => ({ ...prev, isBold: value }))}
+          value={weight}
+          aria-label="글자 굵기"
+          onValueChange={value => {
+            if (value === '가늘게' || value === '굵게') onWeightChange(value);
+          }}
         >
           <div className={styles.radioItem}>
-            <RadioGroup.Item className={styles.radioButton} value="가늘게" id="light">
+            <RadioGroup.Item className={styles.radioButton} value="가늘게" id={id + "-light"}>
               <RadioGroup.Indicator className={styles.radioIndicator} />
             </RadioGroup.Item>
-            <label className={styles.radioLabel} htmlFor="light">
+            <label className={styles.radioLabel} htmlFor={id + "-light"}>
               가늘게
             </label>
           </div>
           <div className={styles.radioItem}>
-            <RadioGroup.Item className={styles.radioButton} value="굵게" id="bold">
+            <RadioGroup.Item className={styles.radioButton} value="굵게" id={id + "-bold"}>
               <RadioGroup.Indicator className={styles.radioIndicator} />
             </RadioGroup.Item>
-            <label className={styles.radioLabel} htmlFor="bold">
+            <label className={styles.radioLabel} htmlFor={id + "-bold"}>
               굵게
             </label>
           </div>
@@ -97,6 +109,14 @@ const SelectFont = () => {
       </div>
     </div>
   );
-};
+}
 
-export default SelectFont;
+export default function SelectFont() {
+  const { settings, setSettings } = useUserSettings();
+  return <FontSettings
+    font={settings.font}
+    weight={settings.isBold}
+    onFontChange={font => setSettings(previous => ({ ...previous, font }))}
+    onWeightChange={isBold => setSettings(previous => ({ ...previous, isBold }))}
+  />;
+}

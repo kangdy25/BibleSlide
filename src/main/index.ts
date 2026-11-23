@@ -4,6 +4,8 @@ import { checkForUpdates, setupAutoUpdater } from './services/updater.ts';
 import { registerVerseHandler } from './ipc/verseHandler.ts';
 import { registerPPTHandler } from './ipc/pptHandler.ts';
 
+import { registerLyricsHandler } from './ipc/lyricsHandler';
+
 let mainWindow: BrowserWindow | null;
 
 function createWindow() {
@@ -37,6 +39,7 @@ setupAutoUpdater();
 // IPC 핸들러 등록
 registerVerseHandler();
 registerPPTHandler();
+registerLyricsHandler();
 
 app.whenReady().then(() => {
   createWindow();

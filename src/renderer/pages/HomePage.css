@@ -1,0 +1,158 @@
+.homePage {
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: clamp(1.5rem, 5vw, 3.5rem);
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 30% 5%, rgba(118, 87, 68, 0.16), transparent 58%),
+    radial-gradient(ellipse at 85% 55%, rgba(54, 87, 112, 0.14), transparent 58%),
+    linear-gradient(150deg, #16181e, #101218);
+}
+
+.homeContent {
+  display: grid;
+  justify-items: center;
+  gap: clamp(1.75rem, 3.75vw, 2.75rem);
+  width: min(100%, 44rem);
+}
+
+.homeIntro {
+  display: grid;
+  gap: 0.875rem;
+  text-align: center;
+}
+
+.homeIntro p {
+  margin: 0;
+  color: #c3c5cd;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  word-break: keep-all;
+}
+
+.homeWordmark {
+  margin: 0;
+  padding-inline: 0.08em;
+  font-family: 'Buenard', Georgia, serif;
+  font-size: clamp(2rem, 5vw, 3.125rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  text-align: center;
+  color: #f2f1ef;
+}
+
+.homeWordmark span {
+  color: #c3cedc;
+}
+
+.homeOptions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(0.75rem, 2vw, 1rem);
+  width: 100%;
+}
+
+.homeOption {
+  display: grid;
+  grid-template-rows: auto auto;
+  align-content: space-between;
+  justify-items: start;
+  min-height: 11rem;
+  gap: 1.5rem;
+  padding: 1.25rem 1.375rem;
+  color: inherit;
+  text-align: left;
+  font: inherit;
+  border: 1px solid var(--home-card-border);
+  border-radius: 0.875rem;
+  background: linear-gradient(145deg, var(--home-card-top), var(--home-card-bottom) 78%);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+  cursor: pointer;
+  transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.homeOptionBible {
+  --home-card-top: #2a2527;
+  --home-card-bottom: #1e1e25;
+  --home-card-border: #473c3b;
+  --home-card-accent: #d8b6a0;
+}
+
+.homeOptionLyrics {
+  --home-card-top: #222a33;
+  --home-card-bottom: #1a2029;
+  --home-card-border: #394552;
+  --home-card-accent: #abc6d8;
+}
+
+.homeOption:hover {
+  transform: translateY(-2px);
+  border-color: var(--home-card-accent);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.23);
+}
+
+.homeOption:focus-visible {
+  outline: 2px solid var(--home-card-accent);
+  outline-offset: 4px;
+}
+
+.homeOptionLogo {
+  display: block;
+  width: min(100%, 9.25rem);
+  height: 2.25rem;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.homeOptionCaption {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.homeOptionCaption strong,
+.homeOptionDescription {
+  display: block;
+}
+
+.homeOptionCaption strong {
+  margin-bottom: 0.45rem;
+  font-size: 1.125rem;
+}
+
+.homeOptionDescription {
+  color: #c3c5cd;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+.homeOptionArrow {
+  flex: none;
+  box-sizing: content-box;
+  padding: 0.25rem;
+  color: var(--home-card-accent);
+}
+
+@media (max-width: 520px) {
+  .homeOptions {
+    grid-template-columns: 1fr;
+  }
+  .homeOption {
+    min-height: 0;
+    gap: 1.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .homeOption {
+    transition: none;
+  }
+  .homeOption:hover {
+    transform: none;
+  }
+}

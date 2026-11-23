@@ -12,6 +12,8 @@ describe('Content 컴포넌트 테스트', () => {
   it('isBold가 굵게일 때 bold 폰트 스타일로 렌더링되어야 한다', () => {
     (useUserSettings as any).mockReturnValue({
       settings: {
+        verseInput: '',
+        format: 'wide',
         bibleVersion: '개역개정',
         textSize: 30,
         letterSpacing: 0,
@@ -27,14 +29,14 @@ describe('Content 컴포넌트 테스트', () => {
     const textEl = screen.getByText(/태초에 하나님이/);
     expect(textEl).toBeInTheDocument();
     
-    // 스타일을 담고 있는 가장 가까운 div를 가져옴
-    const displayPanel = textEl.parentElement;
-    expect(displayPanel).toHaveStyle({ fontWeight: 'bold' });
+    expect(textEl).toHaveStyle({ fontWeight: 'bold' });
   });
 
   it('isBold가 가늘게일 때 normal 폰트 스타일로 렌더링되어야 한다', () => {
     (useUserSettings as any).mockReturnValue({
       settings: {
+        verseInput: '',
+        format: 'wide',
         bibleVersion: '개역개정',
         textSize: 30,
         letterSpacing: 0,

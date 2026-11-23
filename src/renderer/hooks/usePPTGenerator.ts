@@ -22,6 +22,7 @@ const usePPTGenerator = () => {
       textSize: settings.textSize,
       letterSpacing: settings.letterSpacing,
       lineHeight: settings.lineHeight,
+      format: settings.format,
     };
 
     try {
@@ -29,7 +30,7 @@ const usePPTGenerator = () => {
       const result = await window.electronAPI.generateSlide(data);
       if (result.success) {
         window.electronAPI.showAlert(result.message, 'info');
-      } else {
+      } else if (!result.canceled) {
         window.electronAPI.showAlert(`PPT 생성 실패: ${result.message}`, 'error');
       }
     } catch (error) {

@@ -1,4 +1,10 @@
 import { ipcMain, dialog, BrowserWindow } from 'electron';
+import type { SlideDataType } from '../../../types/electron';
+import { BIBLE_VERSIONS } from '../constant/bible';
+import { biblePanels } from '../../shared/slideLayouts';
+import { mayOverflow } from '../../shared/textOverflow';
+import { addBibleSlide } from '../utils/addBibleSlide';
+import { createSlideDeck } from '../utils/slideDeck';
 import PptxGenJS from 'pptxgenjs';
 import { generatePPT } from '../utils/generatePPT';
 import { fetchVerses, parseInput } from '../utils/parseVerse';
@@ -9,70 +15,38 @@ export function registerPPTHandler(): void {
   // -------------------------
   ipcMain.handle(
     'generate-slide',
-    async (
-      event,
-      data: {
-        input: string;
-        bibleVersion: string;
-        align: 'left' | 'center' | 'right';
-        font: string;
-        isBold: '가늘게' | '굵게';
-        textSize: number;
-        letterSpacing: number;
-        lineHeight: number;
-      }
-    ) => {
+    async (event, data: SlideDataType) => {
       try {
-        const { input, bibleVersion, align, font, isBold, textSize, letterSpacing, lineHeight } =
-          data;
-        const verses = fetchVerses(input, bibleVersion);
-
-        let fontWeight;
-        if (isBold === '가늘게') {
-          fontWeight = false;
-        } else {
-          fontWeight = true;
+        const { input, bibleVersion, align, font, isBold, textSize, letterSpacing, lineHeight, format = 'legacy' } = data;
+        if (typeof input !== 'string' || input.length > 256 ||
+          !BIBLE_VERSIONS.some(version => version === bibleVersion) ||
+          !['left', 'center', 'right'].includes(align) ||
+          typeof font !== 'string' || !font.trim() || font.length > 200 ||
+          !['가늘게', '굵게'].includes(isBold) ||
+          ![textSize, letterSpacing, lineHeight].every(Number.isFinite) ||
+          textSize <= 0 || textSize > 400 || Math.abs(letterSpacing) > 100 ||
+          lineHeight <= 0 || lineHeight > 10 || !['legacy', 'wide', 'led'].includes(format)) {
+          throw new Error('성경 슬라이드 설정을 확인해 주세요.');
         }
+        const verses = fetchVerses(input, bibleVersion);
+        const english = bibleVersion === 'KJV' || bibleVersion === 'NIV';
+        let pptx: PptxGenJS | undefined = format === 'legacy' ? undefined : createSlideDeck(format);
+        let overflow = false;
 
-        let pptx: PptxGenJS | undefined;
-
-        verses.forEach((verse, idx) => {
-          const title = `${verse.split(':')[1]} ${verse.split(':')[3]}장 ${verse.split(':')[4]}절`;
-          const subTitle = `${verse.split(':')[1]} ${verse.split(':')[3]}장`;
-          const engTitle = `${verse.split(':')[2]} ${verse.split(':')[3]}:${verse.split(':')[4]}`;
-          const engSubTitle = `${verse.split(':')[2]} ${verse.split(':')[3]}`;
-          const verseContent = `${verse.split(':')[5]}`;
-
-          if (bibleVersion === 'KJV' || bibleVersion === 'NIV') {
-            // 영어 버전인 경우, 제목과 소제목을 영어로 구성
-            pptx = generatePPT(
-              engTitle,
-              engSubTitle,
-              verseContent,
-              align,
-              font,
-              fontWeight,
-              textSize,
-              letterSpacing,
-              lineHeight,
-              pptx
-            );
+        for (const verse of verses) {
+          const [, book, englishBook, chapter, number, legacyText, ...remainingText] = verse.split(':');
+          const title = english ? `${englishBook} ${chapter}:${number}` : `${book} ${chapter}장 ${number}절`;
+          const source = english ? `${englishBook} ${chapter}` : `${book} ${chapter}장`;
+          if (format === 'legacy') {
+            pptx = generatePPT(title, source, legacyText ?? 'undefined', align, font, isBold === '굵게', textSize, letterSpacing, lineHeight, pptx);
           } else {
-            // pptx가 undefined이면 새로 생성, 있으면 슬라이드 추가
-            pptx = generatePPT(
-              title,
-              subTitle,
-              verseContent,
-              align,
-              font,
-              fontWeight,
-              textSize,
-              letterSpacing,
-              lineHeight,
-              pptx
-            );
+            const body = [legacyText, ...remainingText].join(':');
+            const { w, bodyInsetLeft, bodyInsetRight } = biblePanels(format)[0];
+            overflow ||= mayOverflow(body, textSize, w - bodyInsetLeft - bodyInsetRight, 5.25, lineHeight, letterSpacing);
+            addBibleSlide(pptx!, format, title, source, body, data);
           }
-        });
+        }
+        if (!pptx || !verses.length) throw new Error('저장할 구절이 없습니다.');
 
         // 파일 저장 다이얼로그
         const webContents = event.sender;
@@ -106,16 +80,17 @@ export function registerPPTHandler(): void {
         } else {
           resultDialog = await dialog.showSaveDialog(dialogOptions);
         }
-        const { filePath } = resultDialog;
+        const { filePath, canceled } = resultDialog;
 
-        if (filePath) {
-          await pptx!.writeFile({ fileName: filePath });
-          return { success: true, message: `파일이 ${filePath}에 저장되었습니다.` };
+        if (filePath && !canceled) {
+          const destination = /\.pptx$/i.test(filePath) ? filePath : filePath + '.pptx';
+          await pptx.writeFile({ fileName: destination });
+          return { success: true, message: `파일이 ${destination}에 저장되었습니다.${overflow ? '\n긴 구절의 줄바꿈과 글자 크기를 확인해 주세요.' : ''}` };
         }
 
-        return { success: false, message: '파일 저장이 취소되었습니다.' };
+        return { success: false, canceled: true, message: '파일 저장이 취소되었습니다.' };
       } catch (err: unknown) {
-        return `PPT 슬라이드 생성 오류:  ${(err as Error).message}`;
+        return { success: false, message: err instanceof Error ? err.message : 'PPT 생성 중 오류가 발생했습니다.' };
       }
     }
   );

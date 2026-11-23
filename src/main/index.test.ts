@@ -5,6 +5,7 @@ import { describe, it, expect, vi, beforeEach, afterEach, Mock } from 'vitest';
 import { app, BrowserWindow } from 'electron';
 import { checkForUpdates, setupAutoUpdater } from './services/updater';
 import { registerVerseHandler } from './ipc/verseHandler';
+import { registerLyricsHandler } from './ipc/lyricsHandler';
 import { registerPPTHandler } from './ipc/pptHandler';
 
 // 의존성 모듈 모의
@@ -17,6 +18,10 @@ vi.mock('./ipc/verseHandler', () => ({
 }));
 vi.mock('./ipc/pptHandler', () => ({
   registerPPTHandler: vi.fn(),
+}));
+
+vi.mock('./ipc/lyricsHandler', () => ({
+  registerLyricsHandler: vi.fn(),
 }));
 
 // Electron 모듈 모의
@@ -77,6 +82,7 @@ describe('메인 프로세스 진입점 (index.ts)', () => {
     expect(setupAutoUpdater).toHaveBeenCalled();
     expect(registerVerseHandler).toHaveBeenCalled();
     expect(registerPPTHandler).toHaveBeenCalled();
+    expect(registerLyricsHandler).toHaveBeenCalled();
   });
 
   it('기본 설정(프로덕션) 시 loadFile과 업데이트 확인을 호출해야 한다', async () => {

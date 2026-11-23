@@ -22,3 +22,16 @@
   grid-template-columns: 2fr 5fr;
   gap: 1.25rem;
 }
+
+.bibleFormat {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.65rem;
+  font-size: 0.875rem;
+}
+
+.bibleNewPreview { min-width: 0; display: grid; align-content: start; gap: 0.5rem; }
+.biblePreviewPanel { position: absolute; inset-block: 0; text-align: center; }
+.biblePreviewPanel > div { position: absolute; inset-inline: 0; }
+.biblePreviewText { white-space: pre-wrap; overflow-wrap: anywhere; overflow: hidden; }

@@ -22,8 +22,27 @@
 }
 
 .logo {
+  display: block;
   padding: 10px 5px;
   height: 2.5rem;
+}
+
+.logoButton {
+  display: block;
+  padding: 0;
+  border: 0;
+  border-radius: 0.5rem;
+  background: transparent;
+  cursor: pointer;
+}
+
+.logoButton:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.logoButton:focus-visible {
+  outline: 2px solid #93c5fd;
+  outline-offset: 3px;
 }
 
 .title {

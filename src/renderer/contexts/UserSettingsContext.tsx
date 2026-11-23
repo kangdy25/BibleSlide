@@ -1,3 +1,4 @@
+import type { SlideRatio } from '../../shared/slideLayouts';
 import React, { createContext, useState, ReactNode, useMemo, useEffect } from 'react';
 import { BibleVersion } from '../../main/constant/bible';
 import useDeviceOS from '../hooks/useDeviceOS';
@@ -5,6 +6,7 @@ import useDeviceOS from '../hooks/useDeviceOS';
 interface UserSettings {
   bibleVersion: BibleVersion;
   verseInput: string;
+  format: SlideRatio;
   font: string;
   align: 'left' | 'center' | 'right';
   isBold: '가늘게' | '굵게';
@@ -44,6 +46,7 @@ export const UserSettingsProvider = ({ children }: UserSettingsProviderProps) =>
   const [settings, setSettings] = useState<UserSettings>({
     bibleVersion: '개역개정',
     verseInput: '',
+    format: 'wide',
     font: kopubBatang,
     align: 'left',
     isBold: '가늘게',

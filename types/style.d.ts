@@ -7,3 +7,8 @@ declare module '*.css' {
   const content: void;
   export default content;
 }
+
+declare module '*.png?inline' {
+  const src: string;
+  export default src;
+}

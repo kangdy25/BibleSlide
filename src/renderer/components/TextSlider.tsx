@@ -2,57 +2,47 @@ import styles from './TextSlider.module.css';
 import * as Slider from '@radix-ui/react-slider';
 import useUserSettings from '../contexts/useUserSettings';
 
+interface TextValueSliderProps {
+  label: string;
+  value: number;
+  min: number;
+  max: number;
+  step?: number;
+  unit?: string;
+  onChange: (value: number) => void;
+}
+
+export function TextValueSlider({ label, value, min, max, step = 1, unit = '', onChange }: TextValueSliderProps) {
+  return (
+    <div className={styles.control}>
+      <span className={styles.sectionLabel}>{label}: {value}{unit}</span>
+      <Slider.Root
+        className={styles.sliderRoot}
+        value={[value]}
+        onValueChange={([next]) => onChange(next)}
+        min={min}
+        max={max}
+        step={step}
+      >
+        <Slider.Track className={styles.sliderTrack}>
+          <Slider.Range className={styles.sliderRange} />
+        </Slider.Track>
+        <Slider.Thumb className={styles.sliderThumb} aria-label={label} />
+      </Slider.Root>
+    </div>
+  );
+}
+
 const TextSlider = () => {
   const { settings, setSettings } = useUserSettings();
-
   return (
     <div className={styles.section}>
-      <label className={styles.sectionLabel}>텍스트 크기: {settings.textSize}px</label>
-      <Slider.Root
-        className={styles.sliderRoot}
-        value={[settings.textSize]}
-        onValueChange={(value) => setSettings((prev) => ({ ...prev, textSize: value[0] }))}
-        max={48}
-        min={12}
-        step={1}
-      >
-        <Slider.Track className={styles.sliderTrack}>
-          <Slider.Range className={styles.sliderRange} />
-        </Slider.Track>
-        <Slider.Thumb className={styles.sliderThumb} />
-      </Slider.Root>
-
-      {/* 자간 */}
-      <label className={styles.sectionLabel}>자간: {settings.letterSpacing}px</label>
-      <Slider.Root
-        className={styles.sliderRoot}
-        value={[settings.letterSpacing]}
-        min={0}
-        max={20}
-        step={1}
-        onValueChange={(value) => setSettings((prev) => ({ ...prev, letterSpacing: value[0] }))}
-      >
-        <Slider.Track className={styles.sliderTrack}>
-          <Slider.Range className={styles.sliderRange} />
-        </Slider.Track>
-        <Slider.Thumb className={styles.sliderThumb} />
-      </Slider.Root>
-
-      {/* 줄간격 */}
-      <label className={styles.sectionLabel}>행간: {settings.lineHeight}</label>
-      <Slider.Root
-        className={styles.sliderRoot}
-        value={[settings.lineHeight]}
-        min={1}
-        max={3}
-        step={0.05}
-        onValueChange={(value) => setSettings((prev) => ({ ...prev, lineHeight: value[0] }))}
-      >
-        <Slider.Track className={styles.sliderTrack}>
-          <Slider.Range className={styles.sliderRange} />
-        </Slider.Track>
-        <Slider.Thumb className={styles.sliderThumb} />
-      </Slider.Root>
+      <TextValueSlider label="텍스트 크기" value={settings.textSize} min={12} max={48} unit="px"
+        onChange={textSize => setSettings(previous => ({ ...previous, textSize }))} />
+      <TextValueSlider label="자간" value={settings.letterSpacing} min={0} max={20} unit="px"
+        onChange={letterSpacing => setSettings(previous => ({ ...previous, letterSpacing }))} />
+      <TextValueSlider label="행간" value={settings.lineHeight} min={1} max={3} step={0.05}
+        onChange={lineHeight => setSettings(previous => ({ ...previous, lineHeight }))} />
     </div>
   );
 };

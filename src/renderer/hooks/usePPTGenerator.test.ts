@@ -86,6 +86,7 @@ describe('usePPTGenerator 훅 테스트', () => {
     // 정상적인 설정 모킹
     const mockDataSettings = {
       verseInput: '창세기 1:1',
+      format: 'wide',
       bibleVersion: '개역개정',
       font: 'Pretendard',
       align: 'center',
@@ -114,6 +115,7 @@ describe('usePPTGenerator 훅 테스트', () => {
     // 호출 파라미터 확인 (settings 기반 데이터 매핑 확인)
     expect(mockGenerateSlide).toHaveBeenCalledWith({
       input: mockDataSettings.verseInput,
+      format: mockDataSettings.format,
       bibleVersion: mockDataSettings.bibleVersion,
       font: mockDataSettings.font,
       align: mockDataSettings.align,

@@ -51,7 +51,7 @@ describe('PPT 생성 핸들러 (PPT Handler)', () => {
   // 테스트용 기본 데이터
   const mockData = {
     input: 'John 3:16',
-    bibleVersion: 'GAE',
+    bibleVersion: '개역개정',
     align: 'center' as const,
     font: 'Arial',
     isBold: '굵게' as const,
@@ -124,11 +124,11 @@ describe('PPT 생성 핸들러 (PPT Handler)', () => {
     (fetchVerses as Mock).mockReturnValue(['Bible:요한복음:John:3:16:내용']);
     (generatePPT as Mock).mockReturnValue({ writeFile: vi.fn() });
     // Mock: 취소 (filePath가 비어있거나 undefined)
-    (dialog.showSaveDialog as Mock).mockResolvedValue({ cancelled: true, filePath: '' });
+    (dialog.showSaveDialog as Mock).mockResolvedValue({ canceled: true, filePath: '' });
 
     const result = await handler({}, mockData);
 
-    expect(result).toEqual({ success: false, message: '파일 저장이 취소되었습니다.' });
+    expect(result).toEqual({ success: false, canceled: true, message: '파일 저장이 취소되었습니다.' });
   });
 
   it('PPT 생성 또는 저장 중 오류 발생 시 에러 메시지를 반환해야 한다', async () => {
@@ -140,8 +140,7 @@ describe('PPT 생성 핸들러 (PPT Handler)', () => {
 
     const result = await handler({}, mockData);
 
-    expect(result).toContain('PPT 슬라이드 생성 오류');
-    expect(result).toContain('폰트 로드 실패');
+    expect(result).toEqual({ success: false, message: '폰트 로드 실패' });
   });
 
   it('isBold가 "가늘게"인 경우 fontWeight를 false로 설정해야 한다', async () => {

@@ -1,7 +1,8 @@
 .previewArea {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  min-width: 0;
+  gap: 0.75rem;
 }
 
 .previewPanel {
@@ -17,18 +18,11 @@
   position: relative; /* 자식 절대 배치 대비 */
 }
 
-.verseDisplay {
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.4) 100%);
-  border-radius: 0.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 2.5rem;
-  height: 100%;
-  box-sizing: border-box;
-  text-align: left;
-}
-
-.verseLine {
-  color: rgba(249, 250, 251, 0.95);
+.adaptivePreviewPanel {
+  container-type: inline-size;
+  background:
+    linear-gradient(135deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)),
+    rgba(255, 255, 255, 0.05);
 }
 
 .exportSection {

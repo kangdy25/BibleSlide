@@ -1,16 +1,21 @@
+import { useState } from 'react';
 import './App.css';
-import Header from './ui/Header';
-import Sidebar from './ui/Sidebar';
-import Content from './ui/Content';
+import HomePage from './pages/HomePage';
+import BiblePage from './pages/BiblePage';
+import LyricsPage from './pages/LyricsPage';
 
 function App() {
+  const [page, setPage] = useState<'home' | 'bible' | 'lyrics'>('home');
+  const [lyricsOpened, setLyricsOpened] = useState(false);
+  const goHome = () => setPage('home');
+
   return (
     <div className="container">
-      <Header />
-      <div className="mainContent">
-        <Sidebar />
-        <Content />
-      </div>
+      {page === 'home' && (
+        <HomePage onOpenBible={() => setPage('bible')} onOpenLyrics={() => { setLyricsOpened(true); setPage('lyrics'); }} />
+      )}
+      {page === 'bible' && <BiblePage onHome={goHome} />}
+      {lyricsOpened && <div hidden={page !== 'lyrics'}><LyricsPage onHome={goHome} /></div>}
     </div>
   );
 }
