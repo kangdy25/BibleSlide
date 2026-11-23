@@ -30,7 +30,7 @@ it('가사 분할은 공백 줄, CRLF, 반복 후렴과 구간 내 줄바꿈을 
   expect(mayOverflow('가'.repeat(500), 48, 12, 6.5)).toBe(true);
 });
 
-it('LED 성경은 9:6:9 비율로 좌우에 같은 본문을 두고 중앙을 비운다', async () => {
+it('LED 성경은 양끝에 여백을 두고 좌우에 같은 본문을 배치하며 중앙을 비운다', async () => {
   const deck = createSlideDeck('led');
   addBibleSlide(deck, 'led', '창세기 1장 1절', '창세기 1장', '창조하셨다.', bibleStyle);
   const zip = await archive(deck);
@@ -40,8 +40,12 @@ it('LED 성경은 9:6:9 비율로 좌우에 같은 본문을 두고 중앙을 �
   expect(bodies).toHaveLength(2);
   const x = bodies.map(xml => Number(xml.match(/<a:off x="(\d+)"/)?.[1]));
   const widths = bodies.map(xml => Number(xml.match(/<a:ext cx="(\d+)"/)?.[1]));
-  expect(widths).toEqual([6400800, 6400800]);
-  expect(x).toEqual([228600, 11658600]);
+  expect(widths).toEqual([5943600, 5943600]);
+  expect(x).toEqual([685800, 11658600]);
+  expect(18288000 - x[1] - widths[1]).toBe(x[0]);
+  const corners = [...slide.matchAll(/<a:off x="(\d+)" y="\d+"\/><a:ext cx="0" cy="292608"\/>/g)]
+    .map(match => Number(match[1]));
+  expect(corners).toEqual([485775, 6858000, 11430000, 17802225]);
   expect(x[1] - x[0] - widths[0]).toBe(5029200);
   expect(slide).not.toContain('flipH="1"');
 });

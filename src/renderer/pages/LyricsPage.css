@@ -66,8 +66,7 @@
 }
 
 .lyricsInput,
-.lyricsButton,
-.bibleFormat select {
+.lyricsButton {
   box-sizing: border-box;
   min-width: 0;
   color: inherit;
@@ -166,15 +165,6 @@ textarea.lyricsSource {
   display: grid;
   place-items: center;
   padding: 0.35rem;
-}
-
-.lyricsFormat {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.65rem;
-  font-size: 0.875rem;
 }
 
 .lyricsTypography {

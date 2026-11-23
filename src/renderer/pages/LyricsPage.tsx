@@ -4,6 +4,7 @@ import { lyricsBounds, lyricsTitleBounds, slideLayouts } from '../../shared/slid
 import { mayOverflow } from '../../shared/textOverflow';
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Download } from 'lucide-react';
 import { FontSettings } from '../components/SelectFont';
+import SlideFormatSelect from '../components/SlideFormatSelect';
 import { TextValueSlider } from '../components/TextSlider';
 import buttonStyles from '../components/GeneratePPTButton.module.css';
 import headerStyles from '../ui/Header.module.css';
@@ -150,12 +151,7 @@ export default function LyricsPage({ onHome }: { onHome: () => void }) {
                 </button>
               </div>
             )}
-            <label className="lyricsFormat">
-              출력 형식
-              <select className="lyricsInput" value={style.ratio} onChange={e => updateStyle('ratio', e.target.value === 'led' ? 'led' : 'wide')}>
-                <option value="wide">16:9</option><option value="led">24:9</option>
-              </select>
-            </label>
+            <SlideFormatSelect value={style.ratio} onChange={ratio => updateStyle('ratio', ratio)} />
           </div>
           {currentOverflows && <p className="lyricsWarning" role="status">현재 슬라이드의 글자가 넘칠 수 있습니다.</p>}
           {status && <p className="lyricsStatus" role="status">{status}</p>}

@@ -28,8 +28,7 @@ describe('Content 컴포넌트 테스트', () => {
 
     const textEl = screen.getByText(/태초에 하나님이/);
     expect(textEl).toBeInTheDocument();
-    
-    expect(textEl).toHaveStyle({ fontWeight: 'bold' });
+    expect(textEl).toHaveStyle({ fontWeight: '700' });
   });
 
   it('isBold가 가늘게일 때 normal 폰트 스타일로 렌더링되어야 한다', () => {
@@ -51,8 +50,6 @@ describe('Content 컴포넌트 테스트', () => {
 
     const textEl = screen.getByText(/태초에 하나님이/);
     expect(textEl).toBeInTheDocument();
-    
-    const displayPanel = textEl.parentElement;
-    expect(displayPanel).toHaveStyle({ fontWeight: 'normal' });
+    expect(textEl).toHaveStyle({ fontWeight: '400' });
   });
 });

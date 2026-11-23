@@ -13,10 +13,11 @@ it('성경과 찬양 화면을 오가도 성경 입력과 역본을 유지한다
   expect(screen.getByRole('heading', { name: 'WorshipSlide' })).toBeInTheDocument();
   fireEvent.click(screen.getByRole('button', { name: '성경 BibleSlide' }));
   const format = screen.getByRole('combobox', { name: '출력 형식' });
-  expect(format).toHaveValue('wide');
+  expect(format).toHaveTextContent('16:9');
+  fireEvent.keyDown(format, { key: 'Enter' });
   expect(screen.queryByRole('option', { name: '기존 형식' })).not.toBeInTheDocument();
-  fireEvent.change(format, { target: { value: 'led' } });
-  expect(format).toHaveValue('led');
+  fireEvent.click(screen.getByRole('option', { name: '24:9' }));
+  expect(format).toHaveTextContent('24:9');
   const input = screen.getByPlaceholderText('창1:1-3');
   fireEvent.change(input, { target: { value: '시23:1' } });
   fireEvent.click(screen.getByRole('radio', { name: 'KJV' }));
@@ -24,6 +25,11 @@ it('성경과 찬양 화면을 오가도 성경 입력과 역본을 유지한다
   fireEvent.click(screen.getByRole('button', { name: 'WorshipSlide 홈으로' }));
   fireEvent.click(screen.getByRole('button', { name: '찬양 LyricsSlide' }));
   expect(screen.getByRole('heading', { name: 'LyricsSlide' })).toBeInTheDocument();
+  const lyricsFormat = screen.getByRole('combobox', { name: '출력 형식' });
+  expect(lyricsFormat).toHaveTextContent('16:9');
+  fireEvent.keyDown(lyricsFormat, { key: 'Enter' });
+  fireEvent.click(screen.getByRole('option', { name: '24:9' }));
+  expect(lyricsFormat).toHaveTextContent('24:9');
   expect(screen.queryByPlaceholderText('창1:1-3')).not.toBeInTheDocument();
 
   fireEvent.click(screen.getByRole('button', { name: 'WorshipSlide 홈으로' }));

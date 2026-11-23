@@ -1,4 +1,5 @@
-import BibleFormatPreview from './BibleFormatPreview';
+﻿import BibleFormatPreview from './BibleFormatPreview';
+import SlideFormatSelect from '../components/SlideFormatSelect';
 import styles from './Content.module.css';
 import useUserSettings from '../contexts/useUserSettings';
 
@@ -8,18 +9,10 @@ const Content = () => {
   return (
     <div className={styles.previewArea}>
       <BibleFormatPreview ratio={settings.format} />
-      <label className="bibleFormat">
-        출력 형식
-        <select value={settings.format} onChange={({ target }) => {
-          const format = target.value;
-          if (format === 'wide' || format === 'led') {
-            setSettings(previous => ({ ...previous, format }));
-          }
-        }}>
-          <option value="wide">16:9</option>
-          <option value="led">24:9</option>
-        </select>
-      </label>
+      <SlideFormatSelect
+        value={settings.format}
+        onChange={format => setSettings(previous => ({ ...previous, format }))}
+      />
     </div>
   );
 };

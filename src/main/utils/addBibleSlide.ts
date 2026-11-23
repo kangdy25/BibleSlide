@@ -5,7 +5,7 @@ import { biblePanels, type SlideRatio } from '../../shared/slideLayouts';
 export function addBibleSlide(deck: PptxGenJS, ratio: SlideRatio, title: string, source: string, text: string, style: SlideDataType) {
   const slide = deck.addSlide();
   slide.background = { fill: '000000' };
-  for (const { x, w, bodyInsetLeft, bodyInsetRight } of biblePanels(ratio)) {
+  for (const [index, { x, w, bodyInsetLeft, bodyInsetRight }] of biblePanels(ratio).entries()) {
     const label = { x, w, h: 0.45, align: 'center' as const, color: 'FFFFFF', fontFace: '나눔바른고딕' };
     slide.addText(title, { ...label, y: 0.25, fontSize: 20, bold: true });
     slide.addText(text, {
@@ -15,7 +15,9 @@ export function addBibleSlide(deck: PptxGenJS, ratio: SlideRatio, title: string,
       charSpacing: style.letterSpacing, lineSpacingMultiple: style.lineHeight,
     });
     slide.addText(source, { ...label, y: 6.85, fontSize: 16 });
-    for (const [edge, top, direction] of [[x, 0.9, 1], [x + w, 6.65, -1]]) {
+    const leftEdge = ratio === 'led' && index === 0 ? x + bodyInsetLeft / 8 : x;
+    const rightEdge = ratio === 'led' && index === 1 ? x + w - bodyInsetRight / 8 : x + w;
+    for (const [edge, top, direction] of [[leftEdge, 0.9, 1], [rightEdge, 6.65, -1]]) {
       slide.addShape(deck.ShapeType.line, { x: Math.min(edge, edge + direction * 0.55), y: top, w: 0.55, h: 0, line: { color: 'FFFFFF', width: 3 } });
       slide.addShape(deck.ShapeType.line, { x: edge, y: Math.min(top, top + direction * 0.32), w: 0, h: 0.32, line: { color: 'FFFFFF', width: 3 } });
     }

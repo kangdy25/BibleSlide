@@ -26,9 +26,10 @@ export function biblePanels(ratio: SlideRatio) {
 
   // Split the 24:9 width into 9 parts of Scripture, 6 blank, and 9 of Scripture.
   const partWidth = slideLayouts.led.width / 24;
-  const panelWidth = 9 * partWidth;
+  const outerMargin = 0.5;
+  const panelWidth = 9 * partWidth - outerMargin;
   return [
-    { x: 0, w: panelWidth, bodyInsetLeft: 0.25, bodyInsetRight: 0.25 },
+    { x: outerMargin, w: panelWidth, bodyInsetLeft: 0.25, bodyInsetRight: 0.25 },
     { x: 15 * partWidth, w: panelWidth, bodyInsetLeft: 0.25, bodyInsetRight: 0.25 },
   ];
 }
